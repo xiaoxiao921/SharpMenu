@@ -1,0 +1,73 @@
+﻿using System.Globalization;
+
+namespace SharpMenu.Extensions
+{
+    internal static class StringExtensions
+    {
+        public static string Format(this string fmt, Dictionary<string, Func<string>> vars)
+        {
+            return vars.Aggregate(fmt, (str, kv) => str.Replace($"{{{kv.Key}}}", kv.Value()));
+        }
+
+        public static byte?[] ParseHexBytes(this string str)
+        {
+            static bool IsHexChar(char lowerC) => '0' <= lowerC && lowerC <= '9' || 'a' <= lowerC && lowerC <= 'f';
+            var result = new List<byte?>(); 
+            
+            var sr = new StringReader(str);
+            while (sr.Peek() > 0)
+            {
+                var c = char.ToLower((char) sr.Read());
+
+                if (char.IsWhiteSpace(c))
+                    continue;
+                if (c == ';')
+                {
+                    sr.ReadLine();
+                }
+                else if (c == '?')
+                {
+                    result.Add(null);
+                    sr.Read();
+                }
+                else if (IsHexChar(c) && sr.Peek() > 0)
+                {
+                    var other = char.ToLower((char) sr.Peek());
+                    if (!IsHexChar(other)) continue;
+                    sr.Read();
+                    result.Add(byte.Parse($"{c}{other}", NumberStyles.HexNumber));
+                }
+            }
+
+            return result.ToArray();
+        }
+
+        public static List<byte> ParseAsmBytes(this string str)
+        {
+            static bool IsHexChar(char lowerC) => '0' <= lowerC && lowerC <= '9' || 'a' <= lowerC && lowerC <= 'f';
+            var result = new List<byte>();
+
+            var sr = new StringReader(str);
+            while (sr.Peek() > 0)
+            {
+                var c = char.ToLower((char)sr.Read());
+
+                if (char.IsWhiteSpace(c))
+                    continue;
+                if (c == ';')
+                {
+                    sr.ReadLine();
+                }
+                else if (IsHexChar(c) && sr.Peek() > 0)
+                {
+                    var other = char.ToLower((char)sr.Peek());
+                    if (!IsHexChar(other)) continue;
+                    sr.Read();
+                    result.Add(byte.Parse($"{c}{other}", NumberStyles.HexNumber));
+                }
+            }
+
+            return result;
+        }
+    }
+}
