@@ -20,7 +20,7 @@ workspace "SharpHost"
   IncludeDir["g3log"] = "vendor/g3log/src"
   
   CppVersion = "C++17"
-  MsvcToolset = "v142"
+  MsvcToolset = "v143"
   WindowsSdkVersion = "10.0"
   
   function DeclareMSVCOptions()
