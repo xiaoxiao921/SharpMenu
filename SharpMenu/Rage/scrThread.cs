@@ -14,8 +14,8 @@ namespace SharpMenu.Rage
 		scriptHandlerNetComponent* m_net_component; // 0x118
 
 		static scrThread* Get()
-        {
-			return default;
-        }
+		{
+			return tlsContext.Get()->m_script_thread;
+		}
 	}
 }

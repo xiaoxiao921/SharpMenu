@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using SharpMenu.Rage;
+using System.Runtime.InteropServices;
 
 namespace SharpMenu.Gta
 {
@@ -7,6 +8,6 @@ namespace SharpMenu.Gta
     {
         private fixed char pad_0000[8];
 
-        CPed* LocalPed;
+        internal CPed* LocalPed;
     }
 }

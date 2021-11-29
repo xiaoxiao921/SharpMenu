@@ -7,7 +7,7 @@ namespace SharpMenu
     {
         public static void Main(string[] args)
         {
-            Api.Init(args);
+            Api.Init(args[0]);
 
             //var pointers = new Pointers();
 

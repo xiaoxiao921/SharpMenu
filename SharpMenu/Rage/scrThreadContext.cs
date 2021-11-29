@@ -1,14 +1,13 @@
-﻿using System.Runtime.InteropServices;
+﻿global using joaat = System.UInt32;
+using System.Runtime.InteropServices;
 
 namespace SharpMenu.Rage
 {
-	using joatt = UInt32;
-
 	[StructLayout(LayoutKind.Sequential, Size = 0xA8)]
     internal unsafe struct scrThreadContext
     {
 		uint ThreadId;							// 0x00
-		joatt ScriptHash;						// 0x04
+		joaat ScriptHash;						// 0x04
 		ThreadState ThreadState;                // 0x08
 		uint InstructionPointer;				// 0x0C
 		uint FramePointer;						// 0x10

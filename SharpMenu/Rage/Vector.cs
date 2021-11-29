@@ -2,20 +2,20 @@
 
 namespace SharpMenu.Rage
 {
-    internal unsafe struct Vector2
+    internal unsafe struct vector2
     {
         float X;
         float Y;
     }
 
-    internal unsafe struct Vector3
+    internal unsafe struct vector3
     {
         float X;
         float Y;
         float Z;
     }
 
-    internal unsafe struct Vector4
+    internal unsafe struct vector4
     {
         float X;
         float Y;

@@ -5,9 +5,18 @@ namespace SharpMenu.Rage.Natives
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal unsafe struct scrNativeRegistrationTable
     {
-        // Unknown number of entries ?
+        // 255 entries ?
         scrNativeRegistration** Entries;
         uint Unknown;
         bool Initialized;
+
+        internal static scrNativeRegistrationTable* Instance;
+
+        internal static void* GetNativeHandlerFunctionPtr;
+
+        internal static delegate* unmanaged<scrNativeCallContext*, void> GetNativeHandler(scrNativeHash nativeHash) =>
+            ((delegate* unmanaged<
+            in scrNativeRegistrationTable*, in scrNativeHash, /* in */
+            delegate* unmanaged<scrNativeCallContext*, void> /* out */>)GetNativeHandlerFunctionPtr)(Instance, nativeHash);
     }
 }

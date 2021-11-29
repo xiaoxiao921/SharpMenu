@@ -11,14 +11,14 @@
                 return __readgsqword(offset);
             }
             ";
-        private static byte[] __readgsqwordCompiled;
+        private static byte[] __readgsqwordFunctionBytes;
         internal static delegate* unmanaged<ulong, ulong> __readgsqword;
 
         static Intrinsics()
         {
             //__readgsqwordCompiled = MiniCppCompiler.Compile(__readgsqwordSource);
-            __readgsqwordCompiled = new byte[] { 0x65, 0x48, 0x8B, 0x01, 0xC3 };
-            __readgsqword = (delegate* unmanaged<ulong, ulong>)MiniCppCompiler.GetFunctionPointer(__readgsqwordCompiled);
+            __readgsqwordFunctionBytes = new byte[] { 0x65, 0x48, 0x8B, 0x01, 0xC3 };
+            __readgsqword = (delegate* unmanaged<ulong, ulong>)MiniCppCompiler.GetFunctionPointer(__readgsqwordFunctionBytes);
         }
     }
 }
