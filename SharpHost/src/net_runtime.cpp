@@ -22,6 +22,13 @@ namespace sharp_host
             generate_default_runtime_config(runtime_config_path);
         }
 
+        if (!std::filesystem::exists(sharp_loader_dll_path))
+        {
+            MessageBoxW(nullptr, (std::wstring(L"No SharpLoader.dll in ") + std::wstring(sharp_loader_dll_path)).c_str(), L"FAILURE", 0);
+            g_running = false;
+            return;
+        }
+
         start_runtime(runtime_config_path);
 
         auto entrypoint_namespace = sharp_loader_name;
