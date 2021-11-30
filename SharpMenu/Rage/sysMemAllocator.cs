@@ -12,7 +12,7 @@ namespace SharpMenu.Rage
 			var g_gtaTlsEntry = *(sysMemAllocator**)(*(nuint*)(Intrinsics.__readgsqword(88)) + 0xC8); //This has been 0xC8 since 323, I'm not adding this signature to pointers...
 
 			if (g_gtaTlsEntry == null)
-				Console.WriteLine("Failed to find tlsEntry within GTA5.exe via __readgsqword");
+				Log.Info("Failed to find tlsEntry within GTA5.exe via __readgsqword");
 
 			*(sysMemAllocator**)(*(nuint*)(Intrinsics.__readgsqword(88)) + 0xC8) = g_gtaTlsEntry;
 			*(sysMemAllocator**)(*(nuint*)(Intrinsics.__readgsqword(88)) + 0xC8 - 8) = g_gtaTlsEntry;

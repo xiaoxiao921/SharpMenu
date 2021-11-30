@@ -33,7 +33,7 @@ namespace SharpMenu.Memory
                 var result = entry.BytePattern.Match(start, size);
                 if (result == IntPtr.Zero)
                 {
-                    Console.WriteLine($"BytePattern {entry.Name} failed.");
+                    Log.Info($"BytePattern {entry.Name} failed.");
                 }
                 else
                 {
@@ -43,7 +43,7 @@ namespace SharpMenu.Memory
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"{e}");
+                        Log.Info($"{e}");
                     }
                 }
             }

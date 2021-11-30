@@ -46,7 +46,7 @@ namespace SharpMenu.NativeHelpers
         public static byte[] Compile(string cppSource)
         {
             var cppFunctionName = GetCppFunctionName(cppSource);
-            Console.WriteLine("cppFunctionName : " + cppFunctionName);
+            Log.Info("cppFunctionName : " + cppFunctionName);
 
             var cppFunctionNameCOMDAT = cppFunctionName + ", COMDAT";
 
@@ -55,7 +55,7 @@ namespace SharpMenu.NativeHelpers
             Directory.CreateDirectory(tempFolder);
             var vcVarsFilePath = Path.Combine(tempFolder, "vcvars.txt");
 
-            Console.WriteLine("temp folder : " + tempFolder);
+            Log.Info("temp folder : " + tempFolder);
 
             var cppFilePath = Path.Combine(tempFolder, "x64_asm_output.cpp");
             File.WriteAllText(cppFilePath, cppSource);
@@ -85,7 +85,7 @@ namespace SharpMenu.NativeHelpers
 
             if (!(clCompilerOutput.Contains(".exe") && clCompilerOutput.Contains(".obj")))
             {
-                Console.WriteLine(clCompilerOutput);
+                Log.Info(clCompilerOutput);
             }
 
             var startText = cppFunctionNameCOMDAT;
@@ -131,7 +131,7 @@ namespace SharpMenu.NativeHelpers
                     var currentLineAsmText = asmLineSplit[2];
 
                     var formatedLine = string.Format("{0,-16} {1,-16}", asmLineSplit[1].Replace("\t", ""), currentLineAsmText.Replace("\t", ""));
-                    Console.WriteLine(formatedLine);
+                    Log.Info(formatedLine);
                     formatedText.Add(formatedLine);
 
                     asmBytes.AddRange(currentLineAsmBytes);
