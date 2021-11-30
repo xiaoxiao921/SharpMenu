@@ -5,13 +5,32 @@ namespace SharpMenu
 {
     public static class SharpMenu
     {
+        private static string? _getFunctionPtrString;
+
         public static void Main(string[] args)
         {
-            Api.Init(args[0]);
+            _getFunctionPtrString = args[0];
+
+            var mainThread = new Thread(ThreadMethod);
+            mainThread.Start();
+        }
+
+        private static void ThreadMethod()
+        {
+            Api.Init(_getFunctionPtrString!);
 
             Pointers.Init();
+            FiberPool.Init();
+            Hooking.Init();
 
-            UnsafeTest();
+            //UnsafeTest();
+
+            Hooking.Enable();
+
+            while (true)
+            {
+                Thread.Sleep(500);
+            }
         }
 
         private static unsafe void UnsafeTest()
