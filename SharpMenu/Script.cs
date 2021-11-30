@@ -4,28 +4,35 @@ using System.Runtime.InteropServices;
 
 namespace SharpMenu
 {
-    [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct Script
+    internal class Script
     {
         private IntPtr _scriptFiber;
 
         private IntPtr _mainFiber;
 
-        private delegate* unmanaged<void> _func;
+        private NoParamVoidDelegate _func;
 
         private long _wakeTime = 0;
 
         private static readonly HashSet<Script> Scripts = new();
+        private static readonly List<GCHandle> GCHandles = new();
 
+        internal delegate void NoParamVoidDelegate();
+
+        private delegate void FiberFuncDelType(IntPtr thisScript);
         // field needed or gc'd
-        private static Action<IntPtr> FiberFuncDel = FiberFuncS;
+        private static FiberFuncDelType FiberFuncDel = FiberFuncS;
         private static void FiberFuncS(IntPtr param)
         {
-            var thisScript = (Script*)param;
-            thisScript->FiberFunc();
+            var scriptGCHandle = GCHandle.FromIntPtr(param);
+            if ((IntPtr)scriptGCHandle != IntPtr.Zero && scriptGCHandle.Target != null)
+            {
+                var thisScript = (Script)scriptGCHandle.Target!;
+                thisScript.FiberFunc();
+            }
         }
 
-        internal Script(delegate* unmanaged<void> func, UInt64 stackSize)
+        internal Script(NoParamVoidDelegate func, UInt64 stackSize)
         {
             _scriptFiber = IntPtr.Zero;
             _mainFiber = IntPtr.Zero;
@@ -34,15 +41,15 @@ namespace SharpMenu
 
             Scripts.Add(this);
 
-            fixed (Script* thisScript = &this)
-            {
-                _scriptFiber = Fibers.CreateFiber(stackSize, FiberFuncDel, (IntPtr)thisScript);
-            }
+            var thisScriptGCHandle = GCHandle.Alloc(this);
+            GCHandles.Add(thisScriptGCHandle);
+
+            _scriptFiber = Fibers.CreateFiber(stackSize, FiberFuncDel, (IntPtr)thisScriptGCHandle);
         }
 
         private void FiberFunc()
         {
-            _func();
+            _func?.Invoke();
 
             while (true)
             {
@@ -50,7 +57,7 @@ namespace SharpMenu
             }
         }
 
-        private void Tick()
+        internal void Tick()
         {
             _mainFiber = Fibers.GetCurrentFiber();
 
@@ -74,9 +81,14 @@ namespace SharpMenu
             Fibers.SwitchToFiber(_mainFiber);
         }
 
-        internal static Script* GetCurrent()
+        internal static Script? GetCurrent()
         {
-            return (Script*)Fibers.GetFiberData();
+            var scriptGCHandle = GCHandle.FromIntPtr(Fibers.GetFiberData());
+            if ((IntPtr)scriptGCHandle == IntPtr.Zero || scriptGCHandle.Target == null)
+            {
+                return null;
+            }
+            return (Script)scriptGCHandle.Target!;
         }
     }
 }

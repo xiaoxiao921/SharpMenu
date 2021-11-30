@@ -6,18 +6,13 @@ namespace SharpMenu
     internal static class ScriptManager
     {
         private static Mutex _mutex = new();
-        private static readonly unsafe List<IntPtr> Scripts = new();
+        private static readonly unsafe List<Script> Scripts = new();
 
-        static ScriptManager()
-        {
-
-        }
-
-        internal static unsafe void Add(Script* script)
+        internal static unsafe void Add(Script script)
         {
             _mutex.WaitOne();
 
-            Scripts.Add((IntPtr)script);
+            Scripts.Add(script);
 
             _mutex.ReleaseMutex();
         }
@@ -31,23 +26,31 @@ namespace SharpMenu
             _mutex.ReleaseMutex();
         }
 
-        private static bool _firstTickInternal = true;
-        internal static void Tick()
+        private static Script.NoParamVoidDelegate _tickInternalDelegate = TickInternal;
+        private static void TickInternal()
         {
-            static void TickInternal()
+            if (_firstTickInternal)
             {
-                if (_firstTickInternal)
-                {
-                    Fibers.ConvertThreadToFiber(IntPtr.Zero);
-                    NativeInvoker.CacheHandlers();
+                Fibers.ConvertThreadToFiber(IntPtr.Zero);
+                NativeInvoker.CacheHandlers();
 
-                    _firstTickInternal = false;
-                }
+                _firstTickInternal = false;
             }
 
             _mutex.WaitOne();
-            ScriptUtil.ExecuteAsScript(GTA5Hasher.GetHashKey(""), TickInternal);
+
+            foreach (var script in Scripts)
+            {
+                script.Tick();
+            }
+
             _mutex.ReleaseMutex();
+        }
+
+        private static bool _firstTickInternal = true;
+        internal static unsafe void Tick()
+        {
+            ScriptUtil.ExecuteAsScript(GTA5Hasher.GetHashKey("main_persistent"), _tickInternalDelegate);
         }
     }
 }
