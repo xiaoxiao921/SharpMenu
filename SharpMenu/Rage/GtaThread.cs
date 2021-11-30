@@ -7,6 +7,7 @@ namespace SharpMenu.Rage
     {
 		// scrThread fields
 
+		internal void* m_pad1;
 		internal scrThreadContext m_context;					// 0x08
 		internal void* m_stack;									// 0xB0
 		private fixed sbyte m_padding[0x10];						// 0xB8
