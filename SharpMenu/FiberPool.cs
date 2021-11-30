@@ -7,11 +7,17 @@
         private static Mutex _mutex = new();
         private static readonly Stack<Action> Jobs = new();
 
-        static FiberPool()
+        private static readonly Script[] _scripts = new Script[FiberPoolSize];
+
+        private static Script.NoParamVoidDelegate _fiberFuncDelegate = FiberFunc;
+
+        internal static unsafe void Init()
         {
             for (int i = 0; i < FiberPoolSize; i++)
             {
-
+                var script = new Script(_fiberFuncDelegate, 0);
+                _scripts[i] = script;
+                ScriptManager.Add(script);
             }
         }
 
@@ -38,7 +44,11 @@
             while (true)
             {
                 FiberTick();
-                Script.GetCurrent()->Yield();
+                var currentScript = Script.GetCurrent();
+                if (currentScript != null)
+                {
+                    currentScript.Yield();
+                }
             }
         }
     }
