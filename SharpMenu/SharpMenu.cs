@@ -9,7 +9,7 @@ namespace SharpMenu
         {
             Api.Init(args[0]);
 
-            //var pointers = new Pointers();
+            Pointers.Init();
 
             UnsafeTest();
         }

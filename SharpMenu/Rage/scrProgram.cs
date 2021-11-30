@@ -39,24 +39,24 @@ namespace SharpMenu.Rage
 		void** m_native_entrypoints;	// 0x40
 
 		[FieldOffset(0x48)]
-		fixed char m_padding6[0x10];	// 0x48
+		fixed sbyte m_padding6[0x10];	// 0x48
 
 		[FieldOffset(0x58)]
 		uint m_name_hash;				// 0x58
 
 		[FieldOffset(0x5C)]
-		fixed char m_padding7[0x04];	// 0x5C
+		fixed sbyte m_padding7[0x04];	// 0x5C
 
 		[FieldOffset(0x60)]
-		char* m_name;					// 0x60
+		sbyte* m_name;					// 0x60
 
 		[FieldOffset(0x68)]
-		char** m_strings_data;			// 0x68
+		sbyte** m_strings_data;			// 0x68
 
 		[FieldOffset(0x70)]
 		uint m_strings_count;			// 0x70
 
 		[FieldOffset(0x74)]
-		fixed char m_padding8[0x0C];    // 0x74
+		fixed sbyte m_padding8[0x0C];    // 0x74
 	}
 }

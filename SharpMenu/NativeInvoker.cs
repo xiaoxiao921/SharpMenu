@@ -57,7 +57,7 @@ namespace SharpMenu
 
         private static unsafe readonly Dictionary<scrNativeHash, UIntPtr> NativeHashToNativeHandler = new();
 
-        private static void CacheHandlers()
+        internal static void CacheHandlers()
         {
             foreach (var (oldHash, newHash) in Crossmap.OldToNewNativeHash)
             {

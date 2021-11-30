@@ -30,14 +30,12 @@ namespace SharpMenu
 
         internal static void* ModelSpawnBypass;
 
-        internal static void* JmpRbxGadget;
-
         internal static delegate* unmanaged<GtaThread*, uint, ulong> GtaThreadTick;
         internal static delegate* unmanaged<GtaThread*, ulong> GtaThreadKill;
 
         internal static delegate* unmanaged<ulong, long, long, bool> IncrementStatEvent;
 
-        internal static delegate* unmanaged<char*, char*, int, char*, BOOL, Any, Any, Any, BOOL, void> ErrorScreen;
+        internal static delegate* unmanaged<sbyte*, sbyte*, int, sbyte*, BOOL, Any, Any, Any, BOOL, void> ErrorScreen;
 
         internal static delegate* unmanaged<int, int*, int, int, int> TriggerScriptEvent;
 
@@ -82,7 +80,7 @@ namespace SharpMenu
             });
 
 			// Is session active
-			patternBatch.Add("ISA", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", (ptr) =>
+			/*patternBatch.Add("ISA", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", (ptr) =>
 			{
 				IsSessionStarted = (bool*)ptr.Add(3).Rip();
 			});
@@ -184,7 +182,7 @@ namespace SharpMenu
 			// Error Screen Hook
 			patternBatch.Add("ESH", "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC 60 4C 8B F2 48 8B 94 24 ? ? ? ? 33 DB", (ptr) =>
 			{
-				ErrorScreen = (delegate* unmanaged<char*, char*, int, char*, BOOL, Any, Any, Any, BOOL, void>)ptr;
+				ErrorScreen = (delegate* unmanaged<sbyte*, sbyte*, int, sbyte*, BOOL, Any, Any, Any, BOOL, void>)ptr;
 			});
 
 			// Trigger Script Event
@@ -281,9 +279,14 @@ namespace SharpMenu
 			patternBatch.Add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", (ptr) =>
 			{
 				BlameExplode = ptr;
-			});
+			});*/
 
-			//patternBatch.Run();
+			patternBatch.Run();
 		}
+
+		internal static void Init()
+        {
+			Console.WriteLine("Pointers.Init()");
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace SharpMenu.Gta
 		bool m_requires_reply;       // 0x0A
 
 		[FieldOffset(0x0B)]
-		fixed char m_padding1[0x05];       // 0x0B
+		fixed sbyte m_padding1[0x05];       // 0x0B
 
 		[FieldOffset(0x10)]
 		netPlayer* m_source_player;  // 0x10
@@ -37,10 +37,10 @@ namespace SharpMenu.Gta
 		uint m_0x28;        // 0x28
 
 		[FieldOffset(0x2C)]
-		fixed char m_padding2[0x04];
+		fixed sbyte m_padding2[0x04];
 
 		[FieldOffset(0x30)]
-		fixed char m_padding[0x40];      // 0x30
+		fixed sbyte m_padding[0x40];      // 0x30
 
 		[FieldOffset(0x70)]
 		fixed long m_args[54];   // 0x70

@@ -1,4 +1,7 @@
-﻿namespace SharpMenu.Memory
+﻿using System.Diagnostics;
+using static SharpMenu.NativeHelpers.PeReader;
+
+namespace SharpMenu.Memory
 {
     internal class PatternBatch
     {
@@ -30,11 +33,22 @@
                 var result = entry.BytePattern.Match(start, size);
                 if (result == IntPtr.Zero)
                 {
-                    throw new NullReferenceException($"BytePattern {entry.Name} failed.");
+                    Console.WriteLine($"BytePattern {entry.Name} failed.");
                 }
-
-                entry.OnCompletion(result);
+                else
+                {
+                    entry.OnCompletion(result);
+                }
             }
+        }
+
+        public unsafe void Run()
+        {
+            var startAddress = Process.GetCurrentProcess().MainModule!.BaseAddress;
+            var dosHeader = (IMAGE_DOS_HEADER*)startAddress;
+            var ntHeader = (IMAGE_NT_HEADERS64*)startAddress + dosHeader->e_lfanew;
+            var moduleSize = ntHeader->OptionalHeader.SizeOfImage;
+            Run(startAddress, moduleSize);
         }
     }
 }
