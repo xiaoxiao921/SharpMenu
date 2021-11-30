@@ -5,6 +5,34 @@ namespace SharpMenu
 {
     internal static unsafe class ReturnAddressSpoofer
     {
+        /*
+        return value is in		rax
+        params left to right:	rcx	rdx	r8	r9	rsp
+
+        _call_asm
+        mov     QWORD PTR [r8+16], rbx // store the real rbx value in asm_spoofer
+        mov		rbx, QWORD PTR [r8+8] // rbx now point to our spoofer epilogue (_ret_asm)
+
+        mov		r9, [rsp] // put real return address in r9
+        mov     QWORD PTR [r8+24], r9 // store in asm_spoofer the real return address
+
+        mov		r9, QWORD PTR [r8] // get the gta5 rbx gadget address from asm_spoofer
+        mov		[rsp], r9 // return address is now gta5 rbx gadget
+
+        mov 	QWORD PTR [r8+32], rsi // store the real rsi value in asm_spoofer
+        mov		rsi, r8 // rsi now store our asm_spoofer ptr
+
+        jmp     rdx // jump to the native handler
+        
+        _ret_asm
+        mov		r8, rsi // put back the asm spoofer ptr at r8
+        mov		rsi, QWORD PTR [r8+32] // rsi is restored
+
+        mov 	rbx, QWORD PTR [r8+16] // rbx is restored
+        mov 	rcx, QWORD PTR [r8+24] // put in rcx the real return address
+        jmp 	rcx
+        */
+
         [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 8 * 5)]
         internal unsafe struct AsmSpoofer
         {
