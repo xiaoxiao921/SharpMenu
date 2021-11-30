@@ -12,6 +12,7 @@ namespace SharpLoader
         private static IntPtr _oldWindowProc;
         private static delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr> _oldWindowProcDelegate;
 
+        private static WndProcDelegate _newWindowProcDel = NewWndProc;
         private static IntPtr _newWindowProc;
 
         private static Action<int>? OnKeyPress;
@@ -25,7 +26,7 @@ namespace SharpLoader
                 return;
             }
 
-            _newWindowProc = Marshal.GetFunctionPointerForDelegate<WndProcDelegate>(NewWndProc);
+            _newWindowProc = Marshal.GetFunctionPointerForDelegate<WndProcDelegate>(_newWindowProcDel);
             if (_newWindowProc == IntPtr.Zero)
             {
                 Console.WriteLine("_newWindowProc : " + _newWindowProc + " | " + GetLastError());
