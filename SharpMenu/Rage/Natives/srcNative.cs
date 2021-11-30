@@ -22,8 +22,6 @@ namespace SharpMenu.Rage.Natives
 
     public static unsafe class FunctionTypes
     {
-        private static delegate* unmanaged<scrNativeCallContext*, void> scrNativeHandler;
-
         private static void Test()
         {
 
