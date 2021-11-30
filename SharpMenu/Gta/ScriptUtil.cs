@@ -4,12 +4,15 @@ namespace SharpMenu.Gta
 {
     internal static class ScriptUtil
     {
-		internal static unsafe void ExecuteAsScript(joaat scriptHash, Action callback)
+		internal static unsafe void ExecuteAsScript(joaat scriptHash, Script.NoParamVoidDelegate callback)
         {
 			var tlsContext = Rage.tlsContext.Get();
 
-			for (GtaThread* thread = Pointers.ScriptThreads->data[0]; thread != Pointers.ScriptThreads->data[Pointers.ScriptThreads->count]; thread++)
+			var scriptThreads = *Pointers.ScriptThreads;
+			for (int i = 0; i < scriptThreads.size; i++)
             {
+				var thread = scriptThreads.data[i];
+
 				if ((IntPtr)thread == IntPtr.Zero|| thread->m_context.ThreadId == 0 || thread->m_context.ScriptHash != scriptHash)
 					continue;
 
