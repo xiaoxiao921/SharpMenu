@@ -4,25 +4,28 @@ using System.Runtime.InteropServices;
 
 namespace SharpMenu
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Explicit)]
     internal unsafe struct NativeCallContext
     {
+        [FieldOffset(0)]
         void* ReturnValue;
-        uint ArgCount;
-        void* Args;
-        int DataCount;
-        fixed uint Data[48];
 
-        fixed ulong ReturnStack[10];
-        fixed ulong ArgStack[100];
+        [FieldOffset(8)]
+        uint ArgCount;
+
+        [FieldOffset(16)]
+        void* Args;
+
+        [FieldOffset(24)]
+        int DataCount;
+
+        [FieldOffset(28)]
+        fixed uint Data[48];
 
         public NativeCallContext()
         {
-            fixed (void* returnValuePtr = &ReturnStack[0])
-                ReturnValue = returnValuePtr;
-
-            fixed (void* argsPtr = &ArgStack[0])
-                Args = argsPtr;
+            ReturnValue = NativeMemory.Alloc(8 * 10);
+            Args = NativeMemory.Alloc(8 * 100);
 
             DataCount = 0;
             ArgCount = 0;
@@ -30,16 +33,16 @@ namespace SharpMenu
 
         internal void Reset()
         {
-            ArgCount = 0;
             DataCount = 0;
+            ArgCount = 0;
         }
 
         internal void PushArg<T>(T arg)
             where T : unmanaged
         {
-            UInt64* _args = (UInt64*)Args;
-            UInt64* ptrToArgInArray = _args + ArgCount++;
-            *ptrToArgInArray = Unsafe.As<T, UInt64>(ref arg);
+            ulong* _args = (ulong*)Args;
+            ulong* ptrToArgInArray = _args + ArgCount++;
+            *ptrToArgInArray = Unsafe.As<T, ulong>(ref arg);
         }
 
         internal T* GetReturnValue<T>()
@@ -53,17 +56,23 @@ namespace SharpMenu
 
     internal static unsafe class NativeInvoker
     {
-        private static NativeCallContext _callContext;
+        private static NativeCallContext _callContext = new();
 
-        private static unsafe readonly Dictionary<scrNativeHash, UIntPtr> NativeHashToNativeHandler = new();
+        private static unsafe readonly Dictionary<scrNativeHash, UIntPtr> OldNativeHashToNativeHandler = new();
 
         internal static void CacheHandlers()
         {
+            int i = 0;
             foreach (var (oldHash, newHash) in Crossmap.OldToNewNativeHash)
             {
-                var handler = scrNativeRegistrationTable.GetNativeHandler(newHash);
+                //Log.Info($"{oldHash} -> {newHash}");
 
-                NativeHashToNativeHandler.Add(oldHash, (UIntPtr)handler);
+                i++;
+                if (i == 7000)
+                    break;
+
+                if (!OldNativeHashToNativeHandler.ContainsKey(oldHash))
+                    OldNativeHashToNativeHandler.Add(oldHash, (UIntPtr)scrNativeRegistrationTable.GetNativeHandler(newHash));
             }
         }
 
@@ -74,7 +83,7 @@ namespace SharpMenu
 
         private static void EndCall(ulong hash)
         {
-            if (NativeHashToNativeHandler.TryGetValue(hash, out var nativeHandler))
+            if (OldNativeHashToNativeHandler.TryGetValue(hash, out var nativeHandler))
             {
                 fixed (NativeCallContext* callContext = &_callContext)
                 {
@@ -95,6 +104,13 @@ namespace SharpMenu
             where T : unmanaged
         {
             return *_callContext.GetReturnValue<T>();
+        }
+
+        internal static void Invoke(scrNativeHash hash)
+        {
+            BeginCall();
+
+            EndCall(hash);
         }
 
         internal static void Invoke<T1>(scrNativeHash hash, T1 arg1)
@@ -185,6 +201,14 @@ namespace SharpMenu
             PushArg(arg6);
 
             EndCall(hash);
+        }
+
+        internal static TReturn Invoke<TReturn>(scrNativeHash hash)
+            where TReturn : unmanaged
+        {
+            Invoke(hash);
+
+            return GetReturnValue<TReturn>();
         }
 
         internal static TReturn Invoke<TReturn, T1>(scrNativeHash hash, T1 arg1)

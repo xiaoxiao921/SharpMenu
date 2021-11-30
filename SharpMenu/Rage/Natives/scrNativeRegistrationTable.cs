@@ -16,7 +16,7 @@ namespace SharpMenu.Rage.Natives
 
         internal static delegate* unmanaged<scrNativeCallContext*, void> GetNativeHandler(scrNativeHash nativeHash) =>
             ((delegate* unmanaged<
-            in scrNativeRegistrationTable*, in scrNativeHash, /* in */
+            scrNativeRegistrationTable*, scrNativeHash, /* in */
             delegate* unmanaged<scrNativeCallContext*, void> /* out */>)GetNativeHandlerFunctionPtr)(Instance, nativeHash);
     }
 }
