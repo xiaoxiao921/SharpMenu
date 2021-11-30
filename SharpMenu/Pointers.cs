@@ -19,7 +19,7 @@ namespace SharpMenu
         internal static delegate* unmanaged<scrNativeCallContext*, void> FixVectors;
 
 		// atArray<GtaThread*>*
-		internal static atArrayPtr<GtaThread>* ScriptThreads;
+		internal static atArrayGtaThread* ScriptThreads;
 
         internal static delegate* unmanaged<uint, bool> RunScriptThreads;
         internal static scrProgramTable* ScriptProgramTable;
@@ -69,18 +69,18 @@ namespace SharpMenu
 
         internal static IntPtr BlameExplode;
 
-        static Pointers()
+		internal static void Init()
         {
-            var patternBatch = new PatternBatch();
+			var patternBatch = new PatternBatch();
 
 			// Game State
-            patternBatch.Add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20 25", (ptr) =>
-            {
-                GameState = ptr;
-            });
+			patternBatch.Add("GS", "83 3D ? ? ? ? ? 75 17 8B 43 20", (ptr) =>
+			{
+				GameState = ptr.Add(2).Rip();
+			});
 
 			// Is session active
-			/*patternBatch.Add("ISA", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", (ptr) =>
+			patternBatch.Add("ISA", "40 38 35 ? ? ? ? 75 0E 4C 8B C3 49 8B D7 49 8B CE", (ptr) =>
 			{
 				IsSessionStarted = (bool*)ptr.Add(3).Rip();
 			});
@@ -113,7 +113,7 @@ namespace SharpMenu
 			// Script Threads
 			patternBatch.Add("ST", "45 33 F6 8B E9 85 C9 B8", (ptr) =>
 			{
-				ScriptThreads = (atArrayPtr<GtaThread>*) ptr.Sub(4).Rip().Sub(8);
+				ScriptThreads = (atArrayGtaThread*) ptr.Sub(4).Rip().Sub(8);
 				RunScriptThreads = (delegate* unmanaged<uint, bool>) ptr.Sub(0x1F);
 			});
 
@@ -279,14 +279,9 @@ namespace SharpMenu
 			patternBatch.Add("BE", "0F 85 ? ? ? ? 48 8B 05 ? ? ? ? 48 8B 48 08 E8", (ptr) =>
 			{
 				BlameExplode = ptr;
-			});*/
+			});
 
 			patternBatch.Run();
 		}
-
-		internal static void Init()
-        {
-			Console.WriteLine("Pointers.Init()");
-        }
     }
 }
