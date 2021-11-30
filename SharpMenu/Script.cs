@@ -32,7 +32,7 @@ namespace SharpMenu
             }
         }
 
-        internal Script(NoParamVoidDelegate func, UInt64 stackSize)
+        internal Script(NoParamVoidDelegate func, UInt64 stackSize = 0)
         {
             _scriptFiber = IntPtr.Zero;
             _mainFiber = IntPtr.Zero;

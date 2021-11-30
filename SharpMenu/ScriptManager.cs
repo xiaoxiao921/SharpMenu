@@ -29,6 +29,8 @@ namespace SharpMenu
         private static Script.NoParamVoidDelegate _tickInternalDelegate = TickInternal;
         private static void TickInternal()
         {
+            _mutex.WaitOne();
+
             if (_firstTickInternal)
             {
                 Fibers.ConvertThreadToFiber(IntPtr.Zero);
@@ -36,8 +38,6 @@ namespace SharpMenu
 
                 _firstTickInternal = false;
             }
-
-            _mutex.WaitOne();
 
             foreach (var script in Scripts)
             {
