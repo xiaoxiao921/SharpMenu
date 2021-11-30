@@ -37,7 +37,14 @@ namespace SharpMenu.Memory
                 }
                 else
                 {
-                    entry.OnCompletion(result);
+                    try
+                    {
+                        entry.OnCompletion?.Invoke(result);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"{e}");
+                    }
                 }
             }
         }
