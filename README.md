@@ -12,6 +12,10 @@ the first time you'll ever inject it'll create a folder in `%appdata%\SharpHost`
 
 Until a proper launcher / release is made you'll have to do that and put stuff in AppData manually
 
+Once that done, SharpLoader will be loaded automatically by SharpHost when injected, allowing you to load assemblies that are in ``%appdata%\SharpHost\plugins` with F5 and unload them with F6
+
+You put SharpMenu.dll in plugins which contains the BigBaseV2 equivalent in csharp.
+
 To set up the build environment, run the following commands in a terminal:
 ```dos
 git clone URL --recursive
