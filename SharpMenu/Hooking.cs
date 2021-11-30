@@ -49,9 +49,15 @@ namespace SharpMenu
             ConvertThreadToFiberHook.Apply();
         }
 
+        internal static void Disable()
+        {
+            ConvertThreadToFiberHook.Dispose();
+            RunScriptThreadsHook.Dispose();
+        }
+
         private static bool RunScriptThreads(uint opsToExecute)
         {
-            if (true)
+            if (SharpMenu.Running)
             {
                 ScriptManager.Tick();
 
