@@ -67,8 +67,8 @@ namespace SharpLoader
 
                 Console.WriteLine("Unloading " + ass?.FullName);
 
-                //var all = (BindingFlags)(-1);
-                //ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Unload").Invoke(null, null);
+                var all = (BindingFlags)(-1);
+                ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Unload").Invoke(null, null);
 
                 assemblyLoadContext.Unload();
 
