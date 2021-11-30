@@ -2,13 +2,15 @@
 A mod menu base for Grand Theft Auto V.
 Strictly for educational purposes.
 
-## Structure
+This is largely based on BigBaseV2.
 
-- Stuff
+Right now, fiber pool, native invoking, and hooks are the features, this is very wip.
 
-## Features
+SharpHost is a cpp dll that you inject in the target process, its here for hosting the net6 coreclr runtime,
 
- - Stuff
+the first time you'll ever inject it'll create a folder in `%appdata%\SharpHost`, it expect the SharpLoader.dll to sit at `%appdata%\SharpHost\SharpLoader.dll` so you'll have to inject twice (and reload the game too)
+
+Until a proper launcher / release is made you'll have to do that and put stuff in AppData manually
 
 To set up the build environment, run the following commands in a terminal:
 ```dos
@@ -16,4 +18,6 @@ git clone URL --recursive
 cd SharpHost
 GenerateProjects.bat
 ```
-Now, you will be able to open the solution, and simply build it in Visual Studio.
+It'll generate a .sln for VS, you'll have to add the c# projects manually until I tackle a script that does it automatically (Add Existing Project, select the .csproj files)
+
+
