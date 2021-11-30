@@ -8,10 +8,12 @@ namespace SharpMenu
     {
         private delegate bool RunScriptThreadsDel(uint opsToExecute);
         private static RunScriptThreadsDel _origRunScriptThreads;
+        private static RunScriptThreadsDel _runScriptThreadsHookDel = RunScriptThreads;
         private static NativeDetour RunScriptThreadsHook;
 
         private delegate IntPtr ConvertThreadToFiberDel(IntPtr param);
         private static ConvertThreadToFiberDel _origConvertThreadToFiber;
+        private static ConvertThreadToFiberDel _convertThreadToFiberHookDel = ConvertThreadToFiber;
         private static NativeDetour ConvertThreadToFiberHook;
 
         private static NativeDetour m_gta_thread_tick_hook;
@@ -29,24 +31,22 @@ namespace SharpMenu
 
         private static NativeDetour m_scripted_game_event_hook;
 
-
-        static Hooking()
-        {
-            var runScriptThreadsHookPtr = Marshal.GetFunctionPointerForDelegate<RunScriptThreadsDel>(RunScriptThreads);
-            RunScriptThreadsHook = new NativeDetour((IntPtr)Pointers.RunScriptThreads, runScriptThreadsHookPtr, new NativeDetourConfig { ManualApply = true });
-            _origRunScriptThreads = RunScriptThreadsHook.GenerateTrampoline<RunScriptThreadsDel>();
-            RunScriptThreadsHook.Apply();
-
-            var convertThreadToFiberOrigPtr = Marshal.GetFunctionPointerForDelegate<ConvertThreadToFiberDel>(Fibers.ConvertThreadToFiber);
-            var convertThreadToFiberHookPtr = Marshal.GetFunctionPointerForDelegate<ConvertThreadToFiberDel>(ConvertThreadToFiber);
-            ConvertThreadToFiberHook = new NativeDetour(convertThreadToFiberOrigPtr, convertThreadToFiberHookPtr, new NativeDetourConfig { ManualApply = true });
-            _origConvertThreadToFiber = RunScriptThreadsHook.GenerateTrampoline<ConvertThreadToFiberDel>();
-            ConvertThreadToFiberHook.Apply();
-        }
-
         internal static void Init()
         {
-            Console.WriteLine("Hooking.Init()");
+            var runScriptThreadsHookPtr = Marshal.GetFunctionPointerForDelegate(_runScriptThreadsHookDel);
+            RunScriptThreadsHook = new NativeDetour((IntPtr)Pointers.RunScriptThreads, runScriptThreadsHookPtr, new NativeDetourConfig { ManualApply = true });
+            _origRunScriptThreads = RunScriptThreadsHook.GenerateTrampoline<RunScriptThreadsDel>();
+
+            var convertThreadToFiberOrigPtr = Marshal.GetFunctionPointerForDelegate<ConvertThreadToFiberDel>(Fibers.ConvertThreadToFiber);
+            var convertThreadToFiberHookPtr = Marshal.GetFunctionPointerForDelegate(_convertThreadToFiberHookDel);
+            ConvertThreadToFiberHook = new NativeDetour(convertThreadToFiberOrigPtr, convertThreadToFiberHookPtr, new NativeDetourConfig { ManualApply = true });
+            _origConvertThreadToFiber = RunScriptThreadsHook.GenerateTrampoline<ConvertThreadToFiberDel>();
+        }
+
+        internal static void Enable()
+        {
+            RunScriptThreadsHook.Apply();
+            ConvertThreadToFiberHook.Apply();
         }
 
         private static bool RunScriptThreads(uint opsToExecute)
