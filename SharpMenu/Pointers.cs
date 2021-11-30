@@ -16,8 +16,6 @@ namespace SharpMenu
         internal static CPedFactory** PedFactory;
         internal static CNetworkPlayerMgr** NetworkPlayerManager;
 
-        internal static delegate* unmanaged<scrNativeCallContext*, void> FixVectors;
-
 		// atArray<GtaThread*>*
 		internal static atArrayGtaThread* ScriptThreads;
 
@@ -71,6 +69,8 @@ namespace SharpMenu
 
 		internal static void Init()
         {
+			Log.Info("Pointers.Init()");
+
 			var patternBatch = new PatternBatch();
 
 			// Game State
@@ -107,7 +107,7 @@ namespace SharpMenu
 			// Fix Vectors
 			patternBatch.Add("FV", "83 79 18 00 48 8B D1 74 4A FF 4A 18 48 63 4A 18 48 8D 41 04 48 8B 4C CA", (ptr) =>
 			{
-				FixVectors = (delegate* unmanaged <scrNativeCallContext*, void>)ptr;
+				NativeCallContext.FixVectors = (delegate* unmanaged <NativeCallContext*, void>)ptr;
 			});
 
 			// Script Threads
