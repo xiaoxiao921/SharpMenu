@@ -4,8 +4,7 @@ namespace SharpMenu.NativeHelpers
 {
     internal class Fibers
     {
-		[DllImport("kernel32.dll")]
-		internal extern static IntPtr GetCurrentFiber();
+		internal static unsafe IntPtr GetCurrentFiber() => Intrinsics.__GetCurrentFiber();
 
 		[DllImport("kernel32.dll")]
 		internal extern static IntPtr ConvertThreadToFiber(IntPtr fiberData);
@@ -19,8 +18,7 @@ namespace SharpMenu.NativeHelpers
 		[DllImport("kernel32.dll")]
 		internal extern static BOOL IsThreadAFiber();
 
-		[DllImport("kernel32.dll")]
-		internal extern static IntPtr GetFiberData();
+		internal static unsafe IntPtr GetFiberData() => Intrinsics.__GetFiberData();
 
 		[DllImport("kernel32.dll")]
 		internal extern static void DeleteFiber(IntPtr fiberAddress);
