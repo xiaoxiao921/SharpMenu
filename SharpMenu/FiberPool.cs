@@ -5,7 +5,7 @@
         internal const int FiberPoolSize = 10;
 
         private static Mutex _mutex = new();
-        private static readonly Stack<Action> Jobs = new();
+        private static readonly Stack<Script.NoParamVoidDelegate> Jobs = new();
 
         private static readonly Script[] _scripts = new Script[FiberPoolSize];
 
@@ -18,6 +18,18 @@
                 var script = new Script(_fiberFuncDelegate, 0);
                 _scripts[i] = script;
                 ScriptManager.Add(script);
+            }
+        }
+
+        internal static void QueueJob(Script.NoParamVoidDelegate func)
+        {
+            if (func != null)
+            {
+                _mutex.WaitOne();
+
+                Jobs.Push(func);
+
+                _mutex.ReleaseMutex();
             }
         }
 
