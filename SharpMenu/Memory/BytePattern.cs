@@ -52,7 +52,7 @@ namespace SharpMenu.Memory
                         substrCandidate = jumpTable[substrCandidate];
                 }
 
-            return JumpTable;
+            return jumpTable;
         }
 
         public unsafe IntPtr Match(IntPtr start, long maxSize)
@@ -64,7 +64,7 @@ namespace SharpMenu.Memory
                     j++;
                     k++;
                     if (k == Pattern.Length)
-                        return new IntPtr(j - k);
+                        return new IntPtr(((long)start) + j - k);
                 }
                 else
                 {
