@@ -5,18 +5,28 @@ namespace SharpMenu
     public static class SharpMenu
     {
         private static string? _getFunctionPtrString;
+        private static int _loadCount;
 
         public static bool Running { get; internal set; } = true;
 
         public static void Main(string[] args)
         {
             _getFunctionPtrString = args[0];
+            int.TryParse(args[1], out _loadCount);
 
-            var mainThread = new Thread(_Main);
-            mainThread.Start();
+            switch (_loadCount)
+            {
+                case 0:
+                    FirstPhase();
+                    break;
+
+                case 1:
+                    SecondPhase();
+                    break;
+            }
         }
 
-        private static void _Main()
+        private static void Init()
         {
             Api.Init(_getFunctionPtrString!);
 
@@ -24,9 +34,27 @@ namespace SharpMenu
             FiberPool.Init();
             Hooking.Init();
 
-            ScriptManager.Add(new Script(TestScriptDel_));
-
             Hooking.Enable();
+        }
+
+        private static void FirstPhase()
+        {
+            Init();
+        }
+
+        private static void SecondPhase()
+        {
+            var mainThread = new Thread(_Main);
+            mainThread.Start();
+        }
+
+        private static void _Main()
+        {
+            Init();
+
+            Thread.Sleep(500);
+
+            ScriptManager.Add(new Script(TestScriptDel_));
 
             while (Running)
             {
@@ -37,9 +65,8 @@ namespace SharpMenu
         private static Script.NoParamVoidDelegate GodModeDel_ = GodMode_;
         private static void GodMode_()
         {
-            //Log.Info("GodMode_.Start");
-            Ped playerPed = NativeInvoker.Invoke<Ped>(0xD80958FC74E988A6);
-            NativeInvoker.Invoke(0x3882114BDE571AD4, playerPed, 1);
+            var playerPed = Rage.Natives.PLAYER.PLAYER_PED_ID();
+            Rage.Natives.ENTITY.SET_ENTITY_INVINCIBLE(playerPed, 1);
         }
 
         private static Script.NoParamVoidDelegate TestScriptDel_ = TestScript_;
@@ -60,8 +87,6 @@ namespace SharpMenu
             Running = false;
 
             Hooking.Disable();
-
-            Thread.Sleep(1000);
 
             ScriptManager.RemoveAll();
         }

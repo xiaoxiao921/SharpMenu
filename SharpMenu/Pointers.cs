@@ -69,8 +69,6 @@ namespace SharpMenu
 
 		internal static void Init()
         {
-			Log.Info("Pointers.Init()");
-
 			var patternBatch = new PatternBatch();
 
 			// Game State

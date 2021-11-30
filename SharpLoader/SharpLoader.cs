@@ -6,6 +6,8 @@ namespace SharpLoader
 {
     public static class SharpLoader
     {
+        private static int LoadCount;
+
         private static string? PluginFolderPath;
         private static string? ApiGetFunctionPointer;
 
@@ -42,6 +44,11 @@ namespace SharpLoader
             {
                 case F5:
                     LoadAssembliesFromPluginsFolder();
+                    if (LoadCount == 1)
+                    {
+                        UnloadAssemblies();
+                        LoadAssembliesFromPluginsFolder();
+                    }
                     break;
                 case F6:
                     UnloadAssemblies();
@@ -56,6 +63,8 @@ namespace SharpLoader
                 Console.WriteLine("Loading " + Path.GetFileNameWithoutExtension(dllPath));
                 Load(dllPath);
             }
+
+            LoadCount++;
         }
 
         private static void UnloadAssemblies()
@@ -89,7 +98,10 @@ namespace SharpLoader
             var ass = assemblyLoadContext.LoadFromStream(assemblyStream);
 
             var all = (BindingFlags)(-1);
-            ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Main").Invoke(null, new object[] { new string[] { ApiGetFunctionPointer! } });
+            ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Main").Invoke(null,
+                new object[] { new string[] {
+                    ApiGetFunctionPointer!, LoadCount.ToString()
+                }});
 
             AssemblyLoadContexts.Add(assemblyLoadContext);
         }
