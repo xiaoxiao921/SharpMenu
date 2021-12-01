@@ -18,6 +18,7 @@ workspace "SharpHost"
   IncludeDir["ImGui"] = "vendor/ImGui"
   IncludeDir["ImGuiImpl"] = "vendor/ImGui/examples"
   IncludeDir["g3log"] = "vendor/g3log/src"
+  IncludeDir["dotnet"] = "vendor/dotnet/include"
   
   CppVersion = "C++17"
   MsvcToolset = "v143"
@@ -191,6 +192,7 @@ workspace "SharpHost"
       "%{IncludeDir.ImGui}",
       "%{IncludeDir.ImGuiImpl}",
       "%{IncludeDir.g3log}",
+	  "%{IncludeDir.dotnet}",
       "%{prj.name}/src"
     }
 
@@ -244,6 +246,11 @@ workspace "SharpHost"
     targetdir ("bin/" .. outputdir)
     objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
 	
+	files
+    {
+      "%{prj.name}/**.cs"
+    }
+	
 	filter "configurations:Debug"
 	  symbols "On"
 	  optimize "Debug"
@@ -266,6 +273,11 @@ workspace "SharpHost"
 	
     targetdir ("bin/" .. outputdir)
     objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+	
+	files
+    {
+      "%{prj.name}/**.cs"
+    }
 	
 	nuget
 	{
