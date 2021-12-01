@@ -233,3 +233,56 @@ workspace "SharpHost"
       flags { "LinkTimeOptimization", "FatalWarnings", "NoManifest", "MultiProcessorCompile" }
       defines { "SHARPHOST_DIST" }
       optimize "speed"
+	  
+  project "SharpLoader"
+    location "SharpLoader"
+    kind "SharedLib"
+    language "C#"
+	dotnetframework "net6.0"
+	clr "Unsafe"
+	
+    targetdir ("bin/" .. outputdir)
+    objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+	
+	filter "configurations:Debug"
+	  symbols "On"
+	  optimize "Debug"
+      defines "DEBUG"
+
+    filter "configurations:Release"
+	  symbols "Off"
+      optimize "Full"
+	  
+    filter "configurations:Dist"
+	  symbols "Off"
+      optimize "Full"
+	
+  project "SharpMenu"
+    location "SharpMenu"
+    kind "SharedLib"
+    language "C#"
+	dotnetframework "net6.0"
+	clr "Unsafe"
+	
+    targetdir ("bin/" .. outputdir)
+    objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+	
+	nuget
+	{
+	  "Costura.Fody:5.7.0",
+	  "Fody:6.6.0",
+	  "MonoMod.RuntimeDetour:21.11.1.1",
+	}
+	
+	filter "configurations:Debug"
+	  symbols "On"
+	  optimize "Debug"
+      defines "DEBUG"
+
+    filter "configurations:Release"
+	  symbols "Off"
+      optimize "Full"
+	  
+    filter "configurations:Dist"
+	  symbols "Off"
+      optimize "Full"

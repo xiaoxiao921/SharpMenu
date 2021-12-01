@@ -424,3 +424,4 @@ bin/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*.csproj
