@@ -236,6 +236,34 @@ workspace "SharpHost"
       defines { "SHARPHOST_DIST" }
       optimize "speed"
 	  
+  project "SharpLauncher"
+    location "SharpLauncher"
+    kind "WindowedApp"
+    language "C#"
+	dotnetframework "net6.0"
+	clr "Unsafe"
+	
+    targetdir ("bin/" .. outputdir)
+    objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+	
+	files
+    {
+      "%{prj.name}/**.cs"
+    }
+	
+	filter "configurations:Debug"
+	  symbols "On"
+	  optimize "Debug"
+      defines "DEBUG"
+
+    filter "configurations:Release"
+	  symbols "Off"
+      optimize "Full"
+	  
+    filter "configurations:Dist"
+	  symbols "Off"
+      optimize "Full"
+	  
   project "SharpLoader"
     location "SharpLoader"
     kind "SharedLib"
