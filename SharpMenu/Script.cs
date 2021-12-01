@@ -1,6 +1,5 @@
 ﻿using SharpMenu.NativeHelpers;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace SharpMenu
 {
@@ -14,7 +13,8 @@ namespace SharpMenu
 
         private long _wakeTime = 0;
 
-        private static readonly HashSet<Script> Scripts = new();
+        private GCHandle _thisScriptGCHandle;
+
         private static readonly List<GCHandle> GCHandles = new();
 
         internal delegate void NoParamVoidDelegate();
@@ -39,12 +39,15 @@ namespace SharpMenu
 
             _func = func;
 
-            Scripts.Add(this);
+            _thisScriptGCHandle = GCHandle.Alloc(this);
+            GCHandles.Add(_thisScriptGCHandle);
 
-            var thisScriptGCHandle = GCHandle.Alloc(this);
-            GCHandles.Add(thisScriptGCHandle);
+            _scriptFiber = Fibers.CreateFiber(stackSize, FiberFuncDel, (IntPtr)_thisScriptGCHandle);
+        }
 
-            _scriptFiber = Fibers.CreateFiber(stackSize, FiberFuncDel, (IntPtr)thisScriptGCHandle);
+        ~Script()
+        {
+            _thisScriptGCHandle.Free();
         }
 
         private void FiberFunc()

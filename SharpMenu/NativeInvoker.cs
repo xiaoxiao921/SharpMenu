@@ -1,6 +1,4 @@
 ﻿using SharpMenu.Rage.Natives;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace SharpMenu
 {
@@ -29,6 +27,12 @@ namespace SharpMenu
 
             DataCount = 0;
             ArgCount = 0;
+        }
+
+        internal void FreeMemory()
+        {
+            NativeMemory.Free(ReturnValue);
+            NativeMemory.Free(Args);
         }
 
         internal void Reset()
@@ -90,6 +94,11 @@ namespace SharpMenu
                     NativeCallContext.FixVectors(callContext);
                 }
             }
+        }
+
+        internal static void FreeMemory()
+        {
+            _callContext.FreeMemory();
         }
 
         private static void PushArg<T>(T arg)
