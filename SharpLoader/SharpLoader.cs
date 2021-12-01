@@ -1,5 +1,10 @@
-﻿using System.Reflection;
-using System.Runtime.InteropServices;
+﻿global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Runtime.InteropServices;
+global using System.Threading;
+using System.Reflection;
 using System.Runtime.Loader;
 
 namespace SharpLoader
