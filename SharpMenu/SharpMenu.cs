@@ -2,6 +2,7 @@
 global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
+global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
 global using System.Threading;
 using SharpMenu.NativeHelpers;
@@ -37,6 +38,7 @@ namespace SharpMenu
             Api.Init(_getFunctionPtrString!);
 
             Pointers.Init();
+            Renderer.Init();
             FiberPool.Init();
             Hooking.Init();
 
@@ -95,6 +97,8 @@ namespace SharpMenu
             Hooking.Disable();
 
             ScriptManager.RemoveAll();
+
+            NativeInvoker.FreeMemory();
         }
     }
 }
