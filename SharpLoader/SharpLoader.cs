@@ -81,7 +81,7 @@ namespace SharpLoader
                 Console.WriteLine("Unloading " + ass?.FullName);
 
                 var all = (BindingFlags)(-1);
-                ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Unload").Invoke(null, null);
+                ass.GetTypes().FirstOrDefault(t => t.Name == "SharpMenu")?.GetMethods(all)?.FirstOrDefault(m => m.Name == "Unload")?.Invoke(null, null);
             }
         }
 
@@ -103,7 +103,7 @@ namespace SharpLoader
             var ass = assemblyLoadContext.LoadFromStream(assemblyStream);
 
             var all = (BindingFlags)(-1);
-            ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Main").Invoke(null,
+            ass.GetTypes().FirstOrDefault(t => t.Name == "SharpMenu")?.GetMethods(all)?.FirstOrDefault(m => m.Name == "Main")?.Invoke(null,
                 new object[] { new string[] {
                     ApiGetFunctionPointer!, LoadCount.ToString()
                 }});
