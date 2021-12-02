@@ -12,24 +12,22 @@ namespace SharpMenu
     public static class SharpMenu
     {
         private static string? _getFunctionPtrString;
-        private static int _loadCount;
+        internal static int LoadCount;
 
         public static bool Running { get; internal set; } = true;
 
         public static void Main(string[] args)
         {
             _getFunctionPtrString = args[0];
-            int.TryParse(args[1], out _loadCount);
+            int.TryParse(args[1], out LoadCount);
 
-            switch (_loadCount)
+            if (LoadCount == 0)
             {
-                case 0:
-                    FirstPhase();
-                    break;
-
-                case 1:
-                    SecondPhase();
-                    break;
+                FirstPhase();
+            }
+            else
+            {
+                SecondPhase();
             }
         }
 
@@ -52,15 +50,13 @@ namespace SharpMenu
 
         private static void SecondPhase()
         {
-            var mainThread = new Thread(_Main);
+            var mainThread = new Thread(SecondPhaseMain);
             mainThread.Start();
         }
 
-        private static void _Main()
+        private static void SecondPhaseMain()
         {
             Init();
-
-            Thread.Sleep(500);
 
             ScriptManager.Add(new Script(TestScriptDel_));
 
@@ -68,6 +64,25 @@ namespace SharpMenu
             {
                 Thread.Sleep(500);
             }
+
+            Disable();
+        }
+
+        private static void Disable()
+        {
+            Hooking.Disable();
+
+            Thread.Sleep(1000);
+
+            ScriptManager.RemoveAll();
+
+            NativeInvoker.FreeMemory();
+
+            Renderer.Unload();
+
+            Thread.Sleep(1000);
+
+            SharpLoader.SharpLoader.UnloadMe();
         }
 
         private static Script.NoParamVoidDelegate GodModeDel_ = GodMode_;
@@ -78,6 +93,7 @@ namespace SharpMenu
         }
 
         private static Script.NoParamVoidDelegate TestScriptDel_ = TestScript_;
+
         private static void TestScript_()
         {
             while (true)
@@ -92,13 +108,11 @@ namespace SharpMenu
 
         private static void Unload()
         {
+            if (LoadCount == 0)
+            {
+                Disable();
+            }
             Running = false;
-
-            Hooking.Disable();
-
-            ScriptManager.RemoveAll();
-
-            NativeInvoker.FreeMemory();
         }
     }
 }
