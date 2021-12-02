@@ -19,7 +19,7 @@ namespace SharpLoader
         // Required otherwise it get GCed
         private static Action<int> OnKeyPressExecuteAssembliesDelegate = OnKeyPressExecuteAssemblies;
 
-        private static List<AssemblyLoadContext> AssemblyLoadContexts = new();
+        private static Dictionary<Assembly, AssemblyLoadContext> AssemblyLoadContexts = new();
 
         [UnmanagedCallersOnly]
         public static unsafe void EntryPoint(char* pluginFolderPath, char* apiGetFunctionPointer)
@@ -74,8 +74,7 @@ namespace SharpLoader
 
         private static void UnloadAssemblies()
         {
-            var contextsToRemove = new List<AssemblyLoadContext>();
-            foreach (var assemblyLoadContext in AssemblyLoadContexts)
+            foreach (var (assembly, assemblyLoadContext) in AssemblyLoadContexts)
             {
                 var ass = assemblyLoadContext.Assemblies?.ToArray()?[0];
 
@@ -83,16 +82,17 @@ namespace SharpLoader
 
                 var all = (BindingFlags)(-1);
                 ass.GetTypes().First(t => t.Name == "SharpMenu").GetMethods(all).First(m => m.Name == "Unload").Invoke(null, null);
-
-                assemblyLoadContext.Unload();
-
-                contextsToRemove.Add(assemblyLoadContext);
             }
+        }
 
-            foreach (var context in contextsToRemove)
+        public static void UnloadMe()
+        {
+            var callingAssembly = Assembly.GetCallingAssembly();
+            if (AssemblyLoadContexts.TryGetValue(callingAssembly, out var assemblyLoadContext))
             {
-                AssemblyLoadContexts.Remove(context);
+                assemblyLoadContext.Unload();
             }
+            AssemblyLoadContexts.Remove(callingAssembly);
         }
 
         private static void Load(string assemblyPath)
@@ -108,7 +108,7 @@ namespace SharpLoader
                     ApiGetFunctionPointer!, LoadCount.ToString()
                 }});
 
-            AssemblyLoadContexts.Add(assemblyLoadContext);
+            AssemblyLoadContexts.Add(assemblyLoadContext.Assemblies?.ToArray()?[0]!, assemblyLoadContext);
         }
     }
 }
