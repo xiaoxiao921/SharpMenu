@@ -309,17 +309,14 @@ workspace "SharpHost"
 
     links
     {
-      "CppSharp.Runtime"
       "SharpLoader"
     }
 	
 	nuget
 	{
 	  "Costura.Fody:5.7.0",
-	  "DearImguiSharp:1.83.0",
 	  "Fody:6.6.0",
 	  "MonoMod.RuntimeDetour:21.11.1.1",
-	  "SharpDX.Direct3D11:4.2.0",
 	}
 	
 	filter "configurations:Debug"
