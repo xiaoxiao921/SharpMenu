@@ -1,16 +1,13 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpLoader
+﻿namespace SharpLoader
 {
     internal unsafe class KeyboardListener
     {
         const int WM_KEYDOWN = 0x0100;
         const int GWLP_WNDPROC = -4;
 
-        private static IntPtr _currentWindowHandle;
+        private static IntPtr _windowHandle;
 
         private static IntPtr _oldWindowProc;
-        private static delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr> _oldWindowProcDelegate;
 
         private static WndProcDelegate _newWindowProcDel = NewWndProc;
         private static IntPtr _newWindowProc;
@@ -19,10 +16,10 @@ namespace SharpLoader
 
         internal static void Init()
         {
-            _currentWindowHandle = FindWindow("grcWindow", IntPtr.Zero);
-            if (_currentWindowHandle == IntPtr.Zero)
+            _windowHandle = FindWindow("grcWindow", IntPtr.Zero);
+            if (_windowHandle == IntPtr.Zero)
             {
-                Console.WriteLine("_currentWindowHandle : " + _currentWindowHandle + " | " + GetLastError());
+                Console.WriteLine("_currentWindowHandle : " + _windowHandle + " | " + GetLastError());
                 return;
             }
 
@@ -33,16 +30,12 @@ namespace SharpLoader
                 return;
             }
 
-            _oldWindowProc = SetWindowLongPtr64(_currentWindowHandle, GWLP_WNDPROC, _newWindowProc);
+            _oldWindowProc = SetWindowLongPtr64(_windowHandle, GWLP_WNDPROC, _newWindowProc);
             if (_oldWindowProc == IntPtr.Zero)
             {
                 Console.WriteLine("_oldWindowProc : " + _oldWindowProc + " | " + GetLastError());
                 return;
             }
-
-            // GetDelegateForFunctionPointer provoke Fatal error. Internal CLR error. (0x80131506)
-            //_oldWindowProcDelegate = Marshal.GetDelegateForFunctionPointer<WndProcDelegate>(_oldWindowProc);
-            _oldWindowProcDelegate = (delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr>)_oldWindowProc;
         }
 
         internal static void Disable()
@@ -77,10 +70,10 @@ namespace SharpLoader
                 }
             }
 
-            return CallWindowProc(_oldWindowProcDelegate, hWnd, message, wParam, lParam);
+            return CallWindowProc(_oldWindowProc, hWnd, message, wParam, lParam);
         }
 
-        delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        delegate IntPtr WndProcDelegate(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam);
 
         [DllImport("kernel32.dll")]
         static extern uint GetLastError();
@@ -92,7 +85,6 @@ namespace SharpLoader
         static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         [DllImport("user32.dll")]
-        //static extern IntPtr CallWindowProc(WndProcDelegate lpPrevWndFunc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-        static extern IntPtr CallWindowProc(delegate* unmanaged<IntPtr, uint, IntPtr, IntPtr, IntPtr> lpPrevWndFunc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
     }
 }
