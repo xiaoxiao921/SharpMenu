@@ -30,21 +30,18 @@ namespace SharpMenu
             if (WindowHandle == IntPtr.Zero)
             {
                 Log.Error("_windowHandle : " + WindowHandle + " | " + GetLastError());
-                //return;
             }
 
             _newWindowProc = Marshal.GetFunctionPointerForDelegate(WndProc);
             if (_newWindowProc == IntPtr.Zero)
             {
                 Log.Error("_newWindowProc : " + _newWindowProc + " | " + GetLastError());
-                //return;
             }
 
             _oldWindowProc = SetWindowLongPtr64(WindowHandle, GWLP_WNDPROC, _newWindowProc);
             if (_oldWindowProc == IntPtr.Zero)
             {
                 Log.Error("_oldWindowProc : " + _oldWindowProc + " | " + GetLastError());
-                //return;
             }
         }
 
@@ -54,9 +51,6 @@ namespace SharpMenu
 
             Api.api_imgui_destroy();
         }
-
-        private static bool windopen;
-        private static bool checkBoxx;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnPresent()
