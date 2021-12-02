@@ -24,8 +24,6 @@ namespace SharpMenu
         internal static Int64** ScriptGlobals;
         internal static CGameScriptHandlerMgr** ScriptHandlerManager;
 
-        internal static IDXGISwapChain** Swapchain;
-
         internal static void* ModelSpawnBypass;
 
         internal static delegate* unmanaged<GtaThread*, uint, ulong> GtaThreadTick;
@@ -136,7 +134,7 @@ namespace SharpMenu
 			// Swapchain
 			patternBatch.Add("S", "48 8B 0D ? ? ? ? 48 8B 01 44 8D 43 01 33 D2 FF 50 40 8B C8", (ptr) =>
 			{
-				Swapchain = (IDXGISwapChain**)ptr.Add(3).Rip();
+				Renderer.SwapChainPtrPtr = (IDXGISwapChain**)ptr.Add(3).Rip();
 			});
 
 			// Model Spawn Bypass
