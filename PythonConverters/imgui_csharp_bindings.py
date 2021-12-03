@@ -728,7 +728,7 @@ res = ""
 #print("}")
 
 
-print("extern \"C\"\n{")
+#print("extern \"C\"\n{")
 for line in r.splitlines():
     line = line.lstrip().rstrip().split(";")[0]
     if "IMGUI_API" in line and not line.startswith("//") and "IM_FMTARGS" not in line:
@@ -743,11 +743,16 @@ for line in r.splitlines():
         #print("Return Type :\t\t" + GetCppReturnType(cppFunctionSignature))
         #print("Params :\t\t" + GetParams(cppFunctionSignature))
         
-        print("    __declspec(dllexport) " + GetCppReturnType(cppFunctionSignature) + " ImGui" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")")
+        #print("    __declspec(dllexport) " + GetCppReturnType(cppFunctionSignature) + " ImGui" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")")
+        print("    " + GetCppReturnType(cppFunctionSignature) + " " + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")")
         print("    {")
         if GetCppReturnType(cppFunctionSignature) != "void":
             print("        return ImGui::" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParamsInList(cppFunctionSignature) + ");")
         else:
             print("        ImGui::" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParamsInList(cppFunctionSignature) + ");")
         print("    }\n")
+        print("        case FunctionIndex::imgui_" + GetCppFunctionName(cppFunctionSignature).lower() + ":")
+        print("            return &imgui::" + GetCppFunctionName(cppFunctionSignature) + ";")
+        print("            break;")
+        print()
 print("}")
