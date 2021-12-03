@@ -85,11 +85,12 @@ namespace SharpMenu
             SharpLoader.SharpLoader.UnloadMe();
         }
 
+        internal static bool playerInvicible = false;
         private static Script.NoParamVoidDelegate GodModeDel_ = GodMode_;
         private static void GodMode_()
         {
             var playerPed = Rage.Natives.PLAYER.PLAYER_PED_ID();
-            Rage.Natives.ENTITY.SET_ENTITY_INVINCIBLE(playerPed, 1);
+            Rage.Natives.ENTITY.SET_ENTITY_INVINCIBLE(playerPed, Convert.ToInt32(playerInvicible));
         }
 
         private static Script.NoParamVoidDelegate TestScriptDel_ = TestScript_;
