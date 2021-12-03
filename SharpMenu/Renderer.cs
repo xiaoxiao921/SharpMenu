@@ -21,7 +21,7 @@ namespace SharpMenu
             var swapChainPtr = *SwapChainPtrPtr;
             var swapChainPtrValue = (IntPtr)swapChainPtr;
 
-            Api.api_imgui_init((ulong)swapChainPtrValue, (ulong)WindowHandle);
+            Api.imgui_init((ulong)swapChainPtrValue, (ulong)WindowHandle);
         }
 
         private static void SetupWndProcHook()
@@ -49,26 +49,30 @@ namespace SharpMenu
         {
             SetWindowLongPtr64(WindowHandle, GWLP_WNDPROC, _oldWindowProc);
 
-            Api.api_imgui_destroy();
+            Api.imgui_destroy();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void OnPresent()
         {
-            Api.api_imgui_dx11_start_frame();
+            Api.imgui_dx11_start_frame();
+
+            if (Gui.Opened)
+            {
+                Gui.Draw();
+            }
+
+            Api.imgui_dx11_end_frame();
         }
 
         internal static void PreReset()
         {
-            Api.api_imgui_dx11_prereset();
+            Api.imgui_dx11_prereset();
         }
 
         internal static void PostReset()
         {
-            Api.api_imgui_dx11_postreset();
+            Api.imgui_dx11_postreset();
         }
-
-        internal static bool guiOpened = true;
 
         [DllImport("kernel32.dll")]
         private static extern uint GetLastError();
@@ -94,12 +98,12 @@ namespace SharpMenu
             const int VK_F7 = 0x76;
             if (message == WM_KEYDOWN && (int)wParam == VK_F7)
             {
-                guiOpened ^= true;
+                Gui.Opened ^= true;
             }
 
-            if (guiOpened)
+            if (Gui.Opened)
             {
-                Api.api_imgui_wndproc(hWnd, message, wParam, lParam);
+                Api.imgui_wndproc(hWnd, message, wParam, lParam);
             }
 
             return CallWindowProc(_oldWindowProc, hWnd, message, wParam, lParam);
