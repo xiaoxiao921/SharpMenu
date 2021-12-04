@@ -1,5 +1,6 @@
 ﻿using MonoMod.RuntimeDetour;
 using SharpMenu.DirectX;
+using SharpMenu.GUI;
 using SharpMenu.NativeHelpers;
 
 namespace SharpMenu
