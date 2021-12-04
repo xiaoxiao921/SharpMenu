@@ -6,7 +6,7 @@ namespace sharp_host::api::imgui
     comptr<ID3D11Device> m_d3d_device;
     comptr<ID3D11DeviceContext> m_d3d_device_context;
 
-    void imgui_init(IDXGISwapChain* swapchain_ptr, void* hwnd)
+    void init(IDXGISwapChain* swapchain_ptr, void* hwnd)
     {
         m_dxgi_swapchain = comptr<IDXGISwapChain>(swapchain_ptr);
 
@@ -28,37 +28,37 @@ namespace sharp_host::api::imgui
         ImGui_ImplWin32_Init(hwnd);
     }
 
-    void imgui_destroy()
+    void destroy()
     {
         ImGui_ImplWin32_Shutdown();
         ImGui_ImplDX11_Shutdown();
         ImGui::DestroyContext();
     }
 
-    void imgui_dx11_start_frame()
+    void dx11_start_frame()
     {
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
     }
 
-    void imgui_dx11_end_frame()
+    void dx11_end_frame()
     {
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void imgui_dx11_prereset()
+    void dx11_prereset()
     {
         ImGui_ImplDX11_InvalidateDeviceObjects();
     }
 
-    void imgui_dx11_postreset()
+    void dx11_postreset()
     {
         ImGui_ImplDX11_CreateDeviceObjects();
     }
 
-    void imgui_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+    void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     {
         ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
     }
@@ -66,6 +66,11 @@ namespace sharp_host::api::imgui
     bool Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
     {
         return ImGui::Begin(name, p_open, flags);
+    }
+
+    bool BeginMainMenuBar()
+    {
+        return ImGui::BeginMainMenuBar();
     }
 
     bool BeginMenu(char* label, bool enabled)
@@ -81,6 +86,26 @@ namespace sharp_host::api::imgui
     void End()
     {
         return ImGui::End();
+    }
+
+    void EndMainMenuBar()
+    {
+        return ImGui::EndMainMenuBar();
+    }
+
+    void EndMenu()
+    {
+        return ImGui::EndMenu();
+    }
+
+    bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled)
+    {
+        return ImGui::MenuItem(label, shortcut, selected, enabled);
+    }
+
+    bool MenuItemSelectedPtr(const char* label, const char* shortcut, bool* selected, bool enabled)
+    {
+        return ImGui::MenuItem(label, shortcut, selected, enabled);
     }
 
     void Text(char* text)

@@ -14,9 +14,14 @@ namespace sharp_host::api
         _imgui_dx11_postreset,
         _imgui_wndproc,
         _imgui_begin,
+        _imgui_beginmainmenubar,
         _imgui_beginmenu,
         _imgui_checkbox,
         _imgui_end,
+        _imgui_endmainmenubar,
+        _imgui_endmenu,
+        _imgui_menuitem,
+        _imgui_menuitemselectedptr,
         _imgui_text,
     };
 

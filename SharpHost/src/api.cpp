@@ -13,28 +13,31 @@ namespace sharp_host::api
             break;
 
         case FunctionIndex::_imgui_init:
-            return &imgui::imgui_init;
+            return &imgui::init;
             break;
         case FunctionIndex::_imgui_destroy:
-            return &imgui::imgui_destroy;
+            return &imgui::destroy;
             break;
         case FunctionIndex::_imgui_dx11_start_frame:
-            return &imgui::imgui_dx11_start_frame;
+            return &imgui::dx11_start_frame;
             break;
         case FunctionIndex::_imgui_dx11_end_frame:
-            return &imgui::imgui_dx11_end_frame;
+            return &imgui::dx11_end_frame;
             break;
         case FunctionIndex::_imgui_dx11_prereset:
-            return &imgui::imgui_dx11_prereset;
+            return &imgui::dx11_prereset;
             break;
         case FunctionIndex::_imgui_dx11_postreset:
-            return &imgui::imgui_dx11_postreset;
+            return &imgui::dx11_postreset;
             break;
         case FunctionIndex::_imgui_wndproc:
-            return &imgui::imgui_wndproc;
+            return &imgui::wndproc;
             break;
         case FunctionIndex::_imgui_begin:
             return &imgui::Begin;
+            break;
+        case FunctionIndex::_imgui_beginmainmenubar:
+            return &imgui::BeginMainMenuBar;
             break;
         case FunctionIndex::_imgui_beginmenu:
             return &imgui::BeginMenu;
@@ -45,8 +48,25 @@ namespace sharp_host::api
         case FunctionIndex::_imgui_end:
             return &imgui::End;
             break;
+        case FunctionIndex::_imgui_endmainmenubar:
+            return &imgui::EndMenu;
+            break;
+        case FunctionIndex::_imgui_endmenu:
+            return &imgui::EndMenu;
+            break;
+        case FunctionIndex::_imgui_menuitem:
+            return &imgui::MenuItem;
+            break;
+        case FunctionIndex::_imgui_menuitemselectedptr:
+            return &imgui::MenuItemSelectedPtr;
+            break;
         case FunctionIndex::_imgui_text:
             return &imgui::Text;
+            break;
+        default:
+            MessageBoxA(nullptr,
+                (std::string("get_function_pointer : no case for FunctionIndex::") + std::to_string(api_enum)).c_str()
+                , nullptr, MB_OK | MB_ICONEXCLAMATION);
             break;
         }
 

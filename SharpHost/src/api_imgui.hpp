@@ -11,17 +11,22 @@ namespace sharp_host::api::imgui
     extern comptr<ID3D11Device> m_d3d_device;
     extern comptr<ID3D11DeviceContext> m_d3d_device_context;
 
-    void imgui_init(IDXGISwapChain* swapchain_ptr, void* hwnd);
-    void imgui_destroy();
-    void imgui_dx11_start_frame();
-    void imgui_dx11_end_frame();
-    void imgui_dx11_prereset();
-    void imgui_dx11_postreset();
-    void imgui_wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+    void init(IDXGISwapChain* swapchain_ptr, void* hwnd);
+    void destroy();
+    void dx11_start_frame();
+    void dx11_end_frame();
+    void dx11_prereset();
+    void dx11_postreset();
+    void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
     bool Begin(const char* name, bool* p_open, ImGuiWindowFlags flags);
+    bool BeginMainMenuBar();
     bool BeginMenu(char* label, bool enabled = true);
     bool Checkbox(char* label, bool* v);
     void End();
+    void EndMainMenuBar();
+    void EndMenu();
+    bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled);
+    bool MenuItemSelectedPtr(const char* label, const char* shortcut, bool* selected, bool enabled);
     void Text(char* text);
 }
