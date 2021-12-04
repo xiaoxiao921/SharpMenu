@@ -1,10 +1,10 @@
 ﻿using SharpMenu.DirectX;
 using SharpMenu.Extensions;
-using SharpMenu.Gta;
+using SharpMenu.Gta.Classes;
+using SharpMenu.GUI;
 using SharpMenu.Memory;
 using SharpMenu.Rage;
 using SharpMenu.Rage.Natives;
-using System.Runtime.CompilerServices;
 
 namespace SharpMenu
 {
