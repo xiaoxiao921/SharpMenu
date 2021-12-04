@@ -5,6 +5,7 @@
         internal const int FiberPoolSize = 10;
 
         private static Mutex _mutex = new();
+        private static readonly List<Script.NoParamVoidDelegate> PinnedDelegatesJobs = new();
         private static readonly Stack<Script.NoParamVoidDelegate> Jobs = new();
 
         private static readonly Script[] _scripts = new Script[FiberPoolSize];
@@ -27,7 +28,9 @@
             {
                 _mutex.WaitOne();
 
-                Jobs.Push(func);
+                var pinnedFunc = new Script.NoParamVoidDelegate(func);
+                PinnedDelegatesJobs.Add(pinnedFunc);
+                Jobs.Push(pinnedFunc);
 
                 _mutex.ReleaseMutex();
             }
@@ -41,6 +44,7 @@
             if (Jobs.Count > 0)
             {
                 var job = Jobs.Pop();
+                PinnedDelegatesJobs.Remove(job);
                 _mutex.ReleaseMutex();
                 needToRelease = false;
 
