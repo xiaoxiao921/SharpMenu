@@ -1,7 +1,7 @@
 ﻿using SharpMenu.DirectX;
 using SharpMenu.NativeHelpers;
 
-namespace SharpMenu
+namespace SharpMenu.GUI
 {
     internal static unsafe class Renderer
     {
@@ -21,7 +21,7 @@ namespace SharpMenu
             var swapChainPtr = *SwapChainPtrPtr;
             var swapChainPtrValue = (IntPtr)swapChainPtr;
 
-            Api.imgui_init((ulong)swapChainPtrValue, (ulong)WindowHandle);
+            ApiImGui.init((ulong)swapChainPtrValue, (ulong)WindowHandle);
         }
 
         private static void SetupWndProcHook()
@@ -49,29 +49,29 @@ namespace SharpMenu
         {
             SetWindowLongPtr64(WindowHandle, GWLP_WNDPROC, _oldWindowProc);
 
-            Api.imgui_destroy();
+            ApiImGui.destroy();
         }
 
         internal static void OnPresent()
         {
-            Api.imgui_dx11_start_frame();
+            ApiImGui.dx11_start_frame();
 
             if (Gui.Opened)
             {
                 Gui.Draw();
             }
 
-            Api.imgui_dx11_end_frame();
+            ApiImGui.dx11_end_frame();
         }
 
         internal static void PreReset()
         {
-            Api.imgui_dx11_prereset();
+            ApiImGui.dx11_prereset();
         }
 
         internal static void PostReset()
         {
-            Api.imgui_dx11_postreset();
+            ApiImGui.dx11_postreset();
         }
 
         [DllImport("kernel32.dll")]
@@ -103,7 +103,7 @@ namespace SharpMenu
 
             if (Gui.Opened)
             {
-                Api.imgui_wndproc(hWnd, message, wParam, lParam);
+                ApiImGui.wndproc(hWnd, message, wParam, lParam);
             }
 
             return CallWindowProc(_oldWindowProc, hWnd, message, wParam, lParam);
