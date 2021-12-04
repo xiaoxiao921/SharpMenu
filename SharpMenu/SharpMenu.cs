@@ -5,6 +5,7 @@ global using System.Linq;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
 global using System.Threading;
+using SharpMenu.GUI;
 using SharpMenu.NativeHelpers;
 
 namespace SharpMenu
@@ -33,6 +34,8 @@ namespace SharpMenu
 
         private static void Init()
         {
+            Config.Init(Paths.ConfigFile);
+
             Api.Init(_getFunctionPtrString!);
 
             Pointers.Init();
@@ -58,7 +61,7 @@ namespace SharpMenu
         {
             Init();
 
-            ScriptManager.Add(new Script(TestScriptDel_));
+            ScriptManager.Add(new Script(Gui.ScriptFunc));
 
             while (Running)
             {
@@ -83,28 +86,6 @@ namespace SharpMenu
             Thread.Sleep(1000);
 
             SharpLoader.SharpLoader.UnloadMe();
-        }
-
-        internal static bool playerInvicible = false;
-        private static Script.NoParamVoidDelegate GodModeDel_ = GodMode_;
-        private static void GodMode_()
-        {
-            var playerPed = Rage.Natives.PLAYER.PLAYER_PED_ID();
-            Rage.Natives.ENTITY.SET_ENTITY_INVINCIBLE(playerPed, Convert.ToInt32(playerInvicible));
-        }
-
-        private static Script.NoParamVoidDelegate TestScriptDel_ = TestScript_;
-
-        private static void TestScript_()
-        {
-            while (true)
-            {
-                FiberPool.QueueJob(GodModeDel_);
-
-                var cur = Script.GetCurrent();
-                if (cur != null)
-                    cur.Yield();
-            }
         }
 
         private static void Unload()
