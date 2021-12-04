@@ -1,5 +1,4 @@
-﻿using SharpMenu.Gta;
-using System.Runtime.InteropServices;
+﻿using SharpMenu.Gta.Classes;
 
 namespace SharpMenu.Rage
 {
@@ -14,30 +13,30 @@ namespace SharpMenu.Rage
 		private fixed sbyte pad_002D[1]; //0x002D
 		byte m_freeze_momentum; //0x002E
 		private fixed sbyte pad_002F[97]; //0x002F
-		Vector3 m_position; //0x0090
+		internal vector3 m_position; //0x0090
 		private fixed sbyte pad_009C[237]; //0x009C
-		byte m_godmode; //0x0189
+		internal byte m_godmode; //0x0189
 		private fixed sbyte pad_018A[2]; //0x018A
-		byte m_hostility; //0x018C
+		internal byte m_hostility; //0x018C
 		private fixed sbyte pad_018D[243]; //0x018D
-		float m_health; //0x0280
+		internal float m_health; //0x0280
 		private fixed sbyte pad_0284[28]; //0x0284
-		float m_maxhealth; //0x02A0
+		internal float m_maxhealth; //0x02A0
 		private fixed sbyte pad_02A4[124]; //0x02A4
-		Vector3 m_velocity; //0x0320
+		internal vector3 m_velocity; //0x0320
 		private fixed sbyte pad_032C[2564]; //0x032C
-		CAutomobile* m_vehicle; //0x0D30
+		internal CAutomobile* m_vehicle; //0x0D30
 		private fixed sbyte pad_0D38[912]; //0x0D38
-		CPlayerInfo* m_player_info; //0x10C8
+		internal CPlayerInfo* m_player_info; //0x10C8
 		private fixed sbyte pad_10D0[8]; //0x10D0
-		CPedWeaponManager* m_weapon_manager; //0x10D8
+		internal CPedWeaponManager* m_weapon_manager; //0x10D8
 		private fixed sbyte pad_10E0[812]; //0x10E0
-		byte m_bike_seatbelt; //0x140C
+		internal byte m_bike_seatbelt; //0x140C
 		private fixed sbyte pad_140D[11]; //0x140D
-		byte m_vehicle_seatbelt; //0x1418
+		internal byte m_vehicle_seatbelt; //0x1418
 		private fixed sbyte pad_1419[94]; //0x1419
-		byte m_in_vehicle; //0x1477
+		internal byte m_in_vehicle; //0x1477
 		private fixed sbyte pad_1478[104]; //0x1478
-		float m_armor; //0x14E0
+		internal float m_armor; //0x14E0
 	}
 }
