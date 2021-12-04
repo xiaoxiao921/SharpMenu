@@ -1,7 +1,7 @@
 ﻿using SharpMenu.Rage;
 using System.Runtime.InteropServices;
 
-namespace SharpMenu.Gta
+namespace SharpMenu.Gta.Classes
 {
     [StructLayout(LayoutKind.Explicit)]
     internal unsafe struct CScriptedGameEvent
