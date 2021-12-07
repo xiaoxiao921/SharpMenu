@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpMenu.Rage
+﻿namespace SharpMenu.Rage
 {
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe struct atDList<Node> where Node : unmanaged

@@ -1,8 +1,6 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpMenu.Rage
+﻿namespace SharpMenu.Rage
 {
-	[StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal unsafe struct netPlayer
 	{
 

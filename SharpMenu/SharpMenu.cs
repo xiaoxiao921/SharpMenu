@@ -6,7 +6,7 @@ global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
 global using System.Threading;
 using SharpMenu.GUI;
-using SharpMenu.NativeHelpers;
+using SharpMenu.SharpHostCom;
 
 namespace SharpMenu
 {
@@ -71,11 +71,12 @@ namespace SharpMenu
             Disable();
         }
 
-        private static void Disable()
+        private static void Disable(bool wait = true)
         {
             Hooking.Disable();
 
-            Thread.Sleep(1000);
+            if (wait)
+                Thread.Sleep(1000);
 
             ScriptManager.RemoveAll();
 
@@ -83,7 +84,10 @@ namespace SharpMenu
 
             Renderer.Unload();
 
-            Thread.Sleep(1000);
+            if (wait)
+                Thread.Sleep(1000);
+
+            Config.Save();
 
             SharpLoader.SharpLoader.UnloadMe();
         }
@@ -92,7 +96,7 @@ namespace SharpMenu
         {
             if (LoadCount == 0)
             {
-                Disable();
+                Disable(false);
             }
             Running = false;
         }

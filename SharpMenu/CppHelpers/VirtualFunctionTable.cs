@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SharpMenu.NativeHelpers
+﻿namespace SharpMenu.CppHelpers
 {
     /// <summary>
     /// A structure type which an individual virtual function table entry.
@@ -93,7 +87,7 @@ namespace SharpMenu.NativeHelpers
             // Using the size of the IntPtr allows for both x64 and x86 support.
             for (int i = 0; i < numberOfMethods; i++)
             {
-                IntPtr targetAddress = tablePointer + (IntPtr.Size * i);
+                IntPtr targetAddress = tablePointer + IntPtr.Size * i;
 
                 var functionPtr = *(ulong*)targetAddress;
                 tablePointers.Add(new TableEntry

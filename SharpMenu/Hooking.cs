@@ -1,7 +1,8 @@
 ﻿using MonoMod.RuntimeDetour;
+using SharpMenu.CppHelpers;
 using SharpMenu.DirectX;
 using SharpMenu.GUI;
-using SharpMenu.NativeHelpers;
+using SharpMenu.OS.Windows;
 
 namespace SharpMenu
 {

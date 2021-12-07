@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpMenu.Rage
+﻿namespace SharpMenu.Rage
 {
     [StructLayout(LayoutKind.Sequential, Size = 0x158)]
     internal unsafe struct GtaThread

@@ -13,7 +13,6 @@ global using Cam = System.Int32;
 global using Object = System.Int32;
 global using Pickup = System.Int32;
 global using Blip = System.Int32;
-global using Camera = System.Int32;
 global using ScrHandle = System.Int32;
 global using Vector3 = SharpMenu.Rage.scrVector;
 

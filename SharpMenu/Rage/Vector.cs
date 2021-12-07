@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpMenu.Rage
+﻿namespace SharpMenu.Rage
 {
     internal unsafe struct vector2
     {

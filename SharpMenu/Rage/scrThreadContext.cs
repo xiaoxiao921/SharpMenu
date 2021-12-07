@@ -1,9 +1,8 @@
 ﻿global using joaat = System.UInt32;
-using System.Runtime.InteropServices;
 
 namespace SharpMenu.Rage
 {
-	[StructLayout(LayoutKind.Sequential, Size = 0xA8)]
+    [StructLayout(LayoutKind.Sequential, Size = 0xA8)]
     internal unsafe struct scrThreadContext
     {
 		internal uint ThreadId;                         // 0x00

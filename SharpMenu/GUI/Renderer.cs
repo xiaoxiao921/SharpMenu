@@ -1,5 +1,5 @@
 ﻿using SharpMenu.DirectX;
-using SharpMenu.NativeHelpers;
+using SharpMenu.SharpHostCom;
 
 namespace SharpMenu.GUI
 {
@@ -96,7 +96,7 @@ namespace SharpMenu.GUI
             const int WM_KEYUP = 0x0101;
             const int VK_INSERT = 0x2D;
             const int VK_F7 = 0x76;
-            if (message == WM_KEYDOWN && (int)wParam == VK_F7)
+            if (message == WM_KEYUP && (int)wParam == VK_INSERT)
             {
                 Gui.Opened ^= true;
             }

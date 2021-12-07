@@ -1,6 +1,6 @@
 ﻿using SharpMenu.Gta;
-using SharpMenu.NativeHelpers;
 using SharpMenu.Rage.Natives;
+using SharpMenu.SharpHostCom;
 
 namespace SharpMenu.GUI
 {
@@ -35,8 +35,8 @@ namespace SharpMenu.GUI
 							FiberPool.QueueJob(JoinType);
 							void JoinType()
 							{
+								//todo
 								//session::join_type(sessionType);
-								Console.WriteLine("stuff");
 							}
 						}
 					}
@@ -60,12 +60,9 @@ namespace SharpMenu.GUI
 
 				if (ApiImGui.BeginMenu("Windows"))
 				{
-					/*ApiImGui.MenuItemSelectedPtr("Main", null, g.window.main);
-					ApiImGui.MenuItemSelectedPtr("Players", null, g.window.users);
-					ApiImGui.MenuItemSelectedPtr("Logs", null, g.window.log);*/
-					ApiImGui.MenuItem("Main");
-					ApiImGui.MenuItem("Players");
-					ApiImGui.MenuItem("Logs");
+					ApiImGui.MenuItemSelectedPtr("Main", null, ref Config.Instance.window.Main);
+					ApiImGui.MenuItemSelectedPtr("Players", null, ref Config.Instance.window.Players);
+					ApiImGui.MenuItemSelectedPtr("Logs", null, ref Config.Instance.window.Log);
 
 					ApiImGui.EndMenu();
 				}

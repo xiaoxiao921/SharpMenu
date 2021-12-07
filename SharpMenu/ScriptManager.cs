@@ -1,5 +1,5 @@
 ﻿using SharpMenu.Gta;
-using SharpMenu.NativeHelpers;
+using SharpMenu.OS.Windows;
 
 namespace SharpMenu
 {

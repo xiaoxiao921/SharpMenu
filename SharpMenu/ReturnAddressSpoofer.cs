@@ -1,5 +1,4 @@
-﻿using SharpMenu.NativeHelpers;
-using System.Runtime.InteropServices;
+﻿using SharpMenu.CppHelpers;
 
 namespace SharpMenu
 {

@@ -1,16 +1,15 @@
 ﻿using SharpMenu.Extensions;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
-namespace SharpMenu.NativeHelpers
+namespace SharpMenu.CppHelpers
 {
     internal static class MiniCppCompiler
     {
         [DllImport("kernel32.dll")]
         private static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
 
-        private static string? GetCppFunctionName(string cppSource)
+        private static string GetCppFunctionName(string cppSource)
         {
             var end = cppSource.IndexOf('(', cppSource.IndexOf('(', 0) + 1);
 

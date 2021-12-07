@@ -1,4 +1,4 @@
-﻿namespace SharpMenu.NativeHelpers
+﻿namespace SharpMenu.CppHelpers
 {
     internal unsafe ref struct AnsiString
     {

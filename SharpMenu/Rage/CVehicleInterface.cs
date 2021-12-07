@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpMenu.Rage
+﻿namespace SharpMenu.Rage
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 0x0194)]
     internal unsafe struct CVehicleInterface

@@ -1,7 +1,18 @@
-﻿namespace SharpMenu.NativeHelpers
+﻿using SharpMenu.CppHelpers;
+
+namespace SharpMenu.SharpHostCom
 {
     internal unsafe class ApiImGui
     {
+        internal enum ImGuiCond_
+        {
+            ImGuiCond_None = 0,        // No condition (always set the variable), same as _Always
+            ImGuiCond_Always = 1 << 0,   // No condition (always set the variable)
+            ImGuiCond_Once = 1 << 1,   // Set the variable once per runtime session (only the first call will succeed)
+            ImGuiCond_FirstUseEver = 1 << 2,   // Set the variable if the object/window has no persistently saved data (no entry in .ini file)
+            ImGuiCond_Appearing = 1 << 3    // Set the variable if the object/window is appearing after being hidden/inactive (or the first time)
+        };
+
         public unsafe struct ImVec2
         {
             float x, y;
@@ -131,6 +142,7 @@
         /// MenuItem(const char* label, const char* shortcut = NULL, bool* selected, bool enabled = true);  // return true when activated.
         /// </summary>
         private static delegate* unmanaged<char*, char*, bool*, bool, bool> menuitemselectedptr;
+
         /// <summary>
         /// <inheritdoc cref="menuitemselectedptr"/>
         /// </summary>
@@ -152,10 +164,15 @@
         }
 
         /// <summary>
+        /// void ImGui::SetNextWindowSize(const ImVec2* size, ImGuiCond cond)
+        /// </summary>
+        internal static delegate* unmanaged<ImVec2*, ImGuiCond_, void> setnextwindowsize;
+
+        /// <summary>
         /// void Text(char* text)
         /// </summary>
         private static delegate* unmanaged<char*, void> text;
-        void Text(string _text)
+        internal static void Text(string _text)
         {
             using AnsiString nativeText = _text;
             text(nativeText);
@@ -180,6 +197,7 @@
             EndMenu = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_endmenu);
             menuitem = (delegate* unmanaged<char*, char*, bool, bool, bool>)get_function_pointer(Api.FunctionIndex._imgui_menuitem);
             menuitemselectedptr = (delegate* unmanaged<char*, char*, bool*, bool, bool>)get_function_pointer(Api.FunctionIndex._imgui_menuitemselectedptr);
+            setnextwindowsize = (delegate* unmanaged<ImVec2*, ImGuiCond_, void>)get_function_pointer(Api.FunctionIndex._imgui_setnextwindowsize);
             text = (delegate* unmanaged<char*, void>)get_function_pointer(Api.FunctionIndex._imgui_text);
         }
     }

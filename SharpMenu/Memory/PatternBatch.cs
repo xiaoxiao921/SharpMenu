@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using static SharpMenu.NativeHelpers.PeReader;
+using static SharpMenu.OS.Windows.PeReader;
 
 namespace SharpMenu.Memory
 {

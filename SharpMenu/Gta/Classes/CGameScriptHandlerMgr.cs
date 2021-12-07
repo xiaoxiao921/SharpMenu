@@ -1,5 +1,4 @@
 ﻿using SharpMenu.Rage;
-using System.Runtime.InteropServices;
 
 namespace SharpMenu.Gta.Classes
 {

@@ -1,4 +1,4 @@
-﻿using SharpMenu.NativeHelpers;
+﻿using SharpMenu.CppHelpers;
 using SharpMenu.Rage.Natives;
 
 namespace SharpMenu.GUI

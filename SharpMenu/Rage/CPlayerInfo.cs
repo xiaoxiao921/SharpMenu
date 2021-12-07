@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace SharpMenu.Rage
+﻿namespace SharpMenu.Rage
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 0xD30)]
     internal unsafe struct CPlayerInfo

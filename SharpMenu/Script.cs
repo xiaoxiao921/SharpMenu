@@ -1,4 +1,4 @@
-﻿using SharpMenu.NativeHelpers;
+﻿using SharpMenu.OS.Windows;
 using System.Diagnostics;
 
 namespace SharpMenu

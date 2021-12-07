@@ -6,7 +6,9 @@
 
         private static ConsoleColor _oldColor;
 
-        private static void LogInternal(object message, ConsoleColor consoleColor)
+        private static List<string> AllMessages = new();
+
+        private static void OldLogInternal(object message, ConsoleColor consoleColor)
         {
             _mutex.WaitOne();
 
@@ -18,6 +20,16 @@
             File.AppendAllText(Paths.LogFile, loggedMessage + '\n');
 
             Console.ForegroundColor = _oldColor;
+
+            _mutex.ReleaseMutex();
+        }
+
+        private static void LogInternal(object message, ConsoleColor _)
+        {
+            _mutex.WaitOne();
+
+            var loggedMessage = $"[{DateTime.Now}] {message}";
+            AllMessages.Add(loggedMessage);
 
             _mutex.ReleaseMutex();
         }

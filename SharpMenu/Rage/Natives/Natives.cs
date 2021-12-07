@@ -1,6 +1,4 @@
-﻿using SharpMenu;
-
-namespace SharpMenu.Rage.Natives
+﻿namespace SharpMenu.Rage.Natives
 {
     internal static unsafe class SYSTEM
     {

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace SharpMenu.NativeHelpers
+namespace SharpMenu.SharpHostCom
 {
     internal unsafe class Api
     {
@@ -23,6 +23,7 @@ namespace SharpMenu.NativeHelpers
             _imgui_endmenu,
             _imgui_menuitem,
             _imgui_menuitemselectedptr,
+            _imgui_setnextwindowsize,
             _imgui_text,
         }
 

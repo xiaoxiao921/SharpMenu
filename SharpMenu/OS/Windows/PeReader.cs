@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Text;
 
-namespace SharpMenu.NativeHelpers
+namespace SharpMenu.OS.Windows
 {
     // Original code from https://gist.github.com/augustoproiete/b51f29f74f5f5b2c59c39e47a8afc3a3
     // Minus the IMAGE_DEBUG_DIRECTORY part
@@ -19,43 +15,43 @@ namespace SharpMenu.NativeHelpers
 
         public struct IMAGE_DOS_HEADER
         {      // DOS .EXE header
-            public UInt16 e_magic;              // Magic number
-            public UInt16 e_cblp;               // Bytes on last page of file
-            public UInt16 e_cp;                 // Pages in file
-            public UInt16 e_crlc;               // Relocations
-            public UInt16 e_cparhdr;            // Size of header in paragraphs
-            public UInt16 e_minalloc;           // Minimum extra paragraphs needed
-            public UInt16 e_maxalloc;           // Maximum extra paragraphs needed
-            public UInt16 e_ss;                 // Initial (relative) SS value
-            public UInt16 e_sp;                 // Initial SP value
-            public UInt16 e_csum;               // Checksum
-            public UInt16 e_ip;                 // Initial IP value
-            public UInt16 e_cs;                 // Initial (relative) CS value
-            public UInt16 e_lfarlc;             // File address of relocation table
-            public UInt16 e_ovno;               // Overlay number
-            public UInt16 e_res_0;              // Reserved words
-            public UInt16 e_res_1;              // Reserved words
-            public UInt16 e_res_2;              // Reserved words
-            public UInt16 e_res_3;              // Reserved words
-            public UInt16 e_oemid;              // OEM identifier (for e_oeminfo)
-            public UInt16 e_oeminfo;            // OEM information; e_oemid specific
-            public UInt16 e_res2_0;             // Reserved words
-            public UInt16 e_res2_1;             // Reserved words
-            public UInt16 e_res2_2;             // Reserved words
-            public UInt16 e_res2_3;             // Reserved words
-            public UInt16 e_res2_4;             // Reserved words
-            public UInt16 e_res2_5;             // Reserved words
-            public UInt16 e_res2_6;             // Reserved words
-            public UInt16 e_res2_7;             // Reserved words
-            public UInt16 e_res2_8;             // Reserved words
-            public UInt16 e_res2_9;             // Reserved words
-            public UInt32 e_lfanew;             // File address of new exe header
+            public ushort e_magic;              // Magic number
+            public ushort e_cblp;               // Bytes on last page of file
+            public ushort e_cp;                 // Pages in file
+            public ushort e_crlc;               // Relocations
+            public ushort e_cparhdr;            // Size of header in paragraphs
+            public ushort e_minalloc;           // Minimum extra paragraphs needed
+            public ushort e_maxalloc;           // Maximum extra paragraphs needed
+            public ushort e_ss;                 // Initial (relative) SS value
+            public ushort e_sp;                 // Initial SP value
+            public ushort e_csum;               // Checksum
+            public ushort e_ip;                 // Initial IP value
+            public ushort e_cs;                 // Initial (relative) CS value
+            public ushort e_lfarlc;             // File address of relocation table
+            public ushort e_ovno;               // Overlay number
+            public ushort e_res_0;              // Reserved words
+            public ushort e_res_1;              // Reserved words
+            public ushort e_res_2;              // Reserved words
+            public ushort e_res_3;              // Reserved words
+            public ushort e_oemid;              // OEM identifier (for e_oeminfo)
+            public ushort e_oeminfo;            // OEM information; e_oemid specific
+            public ushort e_res2_0;             // Reserved words
+            public ushort e_res2_1;             // Reserved words
+            public ushort e_res2_2;             // Reserved words
+            public ushort e_res2_3;             // Reserved words
+            public ushort e_res2_4;             // Reserved words
+            public ushort e_res2_5;             // Reserved words
+            public ushort e_res2_6;             // Reserved words
+            public ushort e_res2_7;             // Reserved words
+            public ushort e_res2_8;             // Reserved words
+            public ushort e_res2_9;             // Reserved words
+            public uint e_lfanew;             // File address of new exe header
         }
 
         [StructLayout(LayoutKind.Sequential)]
         public struct IMAGE_NT_HEADERS64
         {
-            public UInt32 Signature;
+            public uint Signature;
             public IMAGE_FILE_HEADER FileHeader;
             public IMAGE_OPTIONAL_HEADER64 OptionalHeader;
         }
@@ -63,43 +59,43 @@ namespace SharpMenu.NativeHelpers
         [StructLayout(LayoutKind.Sequential)]
         public struct IMAGE_DATA_DIRECTORY
         {
-            public UInt32 VirtualAddress;
-            public UInt32 Size;
+            public uint VirtualAddress;
+            public uint Size;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct IMAGE_OPTIONAL_HEADER32
         {
-            public UInt16 Magic;
-            public Byte MajorLinkerVersion;
-            public Byte MinorLinkerVersion;
-            public UInt32 SizeOfCode;
-            public UInt32 SizeOfInitializedData;
-            public UInt32 SizeOfUninitializedData;
-            public UInt32 AddressOfEntryPoint;
-            public UInt32 BaseOfCode;
-            public UInt32 BaseOfData;
-            public UInt32 ImageBase;
-            public UInt32 SectionAlignment;
-            public UInt32 FileAlignment;
-            public UInt16 MajorOperatingSystemVersion;
-            public UInt16 MinorOperatingSystemVersion;
-            public UInt16 MajorImageVersion;
-            public UInt16 MinorImageVersion;
-            public UInt16 MajorSubsystemVersion;
-            public UInt16 MinorSubsystemVersion;
-            public UInt32 Win32VersionValue;
-            public UInt32 SizeOfImage;
-            public UInt32 SizeOfHeaders;
-            public UInt32 CheckSum;
-            public UInt16 Subsystem;
-            public UInt16 DllCharacteristics;
-            public UInt32 SizeOfStackReserve;
-            public UInt32 SizeOfStackCommit;
-            public UInt32 SizeOfHeapReserve;
-            public UInt32 SizeOfHeapCommit;
-            public UInt32 LoaderFlags;
-            public UInt32 NumberOfRvaAndSizes;
+            public ushort Magic;
+            public byte MajorLinkerVersion;
+            public byte MinorLinkerVersion;
+            public uint SizeOfCode;
+            public uint SizeOfInitializedData;
+            public uint SizeOfUninitializedData;
+            public uint AddressOfEntryPoint;
+            public uint BaseOfCode;
+            public uint BaseOfData;
+            public uint ImageBase;
+            public uint SectionAlignment;
+            public uint FileAlignment;
+            public ushort MajorOperatingSystemVersion;
+            public ushort MinorOperatingSystemVersion;
+            public ushort MajorImageVersion;
+            public ushort MinorImageVersion;
+            public ushort MajorSubsystemVersion;
+            public ushort MinorSubsystemVersion;
+            public uint Win32VersionValue;
+            public uint SizeOfImage;
+            public uint SizeOfHeaders;
+            public uint CheckSum;
+            public ushort Subsystem;
+            public ushort DllCharacteristics;
+            public uint SizeOfStackReserve;
+            public uint SizeOfStackCommit;
+            public uint SizeOfHeapReserve;
+            public uint SizeOfHeapCommit;
+            public uint LoaderFlags;
+            public uint NumberOfRvaAndSizes;
 
             public IMAGE_DATA_DIRECTORY ExportTable;
             public IMAGE_DATA_DIRECTORY ImportTable;
@@ -122,35 +118,35 @@ namespace SharpMenu.NativeHelpers
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct IMAGE_OPTIONAL_HEADER64
         {
-            public UInt16 Magic;
-            public Byte MajorLinkerVersion;
-            public Byte MinorLinkerVersion;
-            public UInt32 SizeOfCode;
-            public UInt32 SizeOfInitializedData;
-            public UInt32 SizeOfUninitializedData;
-            public UInt32 AddressOfEntryPoint;
-            public UInt32 BaseOfCode;
-            public UInt64 ImageBase;
-            public UInt32 SectionAlignment;
-            public UInt32 FileAlignment;
-            public UInt16 MajorOperatingSystemVersion;
-            public UInt16 MinorOperatingSystemVersion;
-            public UInt16 MajorImageVersion;
-            public UInt16 MinorImageVersion;
-            public UInt16 MajorSubsystemVersion;
-            public UInt16 MinorSubsystemVersion;
-            public UInt32 Win32VersionValue;
-            public UInt32 SizeOfImage;
-            public UInt32 SizeOfHeaders;
-            public UInt32 CheckSum;
-            public UInt16 Subsystem;
-            public UInt16 DllCharacteristics;
-            public UInt64 SizeOfStackReserve;
-            public UInt64 SizeOfStackCommit;
-            public UInt64 SizeOfHeapReserve;
-            public UInt64 SizeOfHeapCommit;
-            public UInt32 LoaderFlags;
-            public UInt32 NumberOfRvaAndSizes;
+            public ushort Magic;
+            public byte MajorLinkerVersion;
+            public byte MinorLinkerVersion;
+            public uint SizeOfCode;
+            public uint SizeOfInitializedData;
+            public uint SizeOfUninitializedData;
+            public uint AddressOfEntryPoint;
+            public uint BaseOfCode;
+            public ulong ImageBase;
+            public uint SectionAlignment;
+            public uint FileAlignment;
+            public ushort MajorOperatingSystemVersion;
+            public ushort MinorOperatingSystemVersion;
+            public ushort MajorImageVersion;
+            public ushort MinorImageVersion;
+            public ushort MajorSubsystemVersion;
+            public ushort MinorSubsystemVersion;
+            public uint Win32VersionValue;
+            public uint SizeOfImage;
+            public uint SizeOfHeaders;
+            public uint CheckSum;
+            public ushort Subsystem;
+            public ushort DllCharacteristics;
+            public ulong SizeOfStackReserve;
+            public ulong SizeOfStackCommit;
+            public ulong SizeOfHeapReserve;
+            public ulong SizeOfHeapCommit;
+            public uint LoaderFlags;
+            public uint NumberOfRvaAndSizes;
 
             public IMAGE_DATA_DIRECTORY ExportTable;
             public IMAGE_DATA_DIRECTORY ImportTable;
@@ -173,13 +169,13 @@ namespace SharpMenu.NativeHelpers
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct IMAGE_FILE_HEADER
         {
-            public UInt16 Machine;
-            public UInt16 NumberOfSections;
-            public UInt32 TimeDateStamp;
-            public UInt32 PointerToSymbolTable;
-            public UInt32 NumberOfSymbols;
-            public UInt16 SizeOfOptionalHeader;
-            public UInt16 Characteristics;
+            public ushort Machine;
+            public ushort NumberOfSections;
+            public uint TimeDateStamp;
+            public uint PointerToSymbolTable;
+            public uint NumberOfSymbols;
+            public ushort SizeOfOptionalHeader;
+            public ushort Characteristics;
         }
 
         // Grabbed the following 2 definitions from http://www.pinvoke.net/default.aspx/Structures/IMAGE_SECTION_HEADER.html
@@ -191,21 +187,21 @@ namespace SharpMenu.NativeHelpers
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
             public string Name;
             [FieldOffset(8)]
-            public UInt32 VirtualSize;
+            public uint VirtualSize;
             [FieldOffset(12)]
-            public UInt32 VirtualAddress;
+            public uint VirtualAddress;
             [FieldOffset(16)]
-            public UInt32 SizeOfRawData;
+            public uint SizeOfRawData;
             [FieldOffset(20)]
-            public UInt32 PointerToRawData;
+            public uint PointerToRawData;
             [FieldOffset(24)]
-            public UInt32 PointerToRelocations;
+            public uint PointerToRelocations;
             [FieldOffset(28)]
-            public UInt32 PointerToLinenumbers;
+            public uint PointerToLinenumbers;
             [FieldOffset(32)]
-            public UInt16 NumberOfRelocations;
+            public ushort NumberOfRelocations;
             [FieldOffset(34)]
-            public UInt16 NumberOfLinenumbers;
+            public ushort NumberOfLinenumbers;
             [FieldOffset(36)]
             public DataSectionFlags Characteristics;
         }
@@ -386,16 +382,16 @@ namespace SharpMenu.NativeHelpers
         [StructLayout(LayoutKind.Sequential)]
         public struct IMAGE_DEBUG_DIRECTORY
         {
-            public UInt32 Characteristics;
-            public UInt32 TimeDateStamp;
-            public UInt16 MajorVersion;
-            public UInt16 MinorVersion;
+            public uint Characteristics;
+            public uint TimeDateStamp;
+            public ushort MajorVersion;
+            public ushort MinorVersion;
             public _Type Type;
-            public UInt32 SizeOfData;
-            public UInt32 AddressOfRawData;
-            public UInt32 PointerToRawData;
+            public uint SizeOfData;
+            public uint AddressOfRawData;
+            public uint PointerToRawData;
 
-            public enum _Type : UInt32
+            public enum _Type : uint
             {
                 IMAGE_DEBUG_TYPE_UNKNOWN = 0,
                 IMAGE_DEBUG_TYPE_COFF = 1,
@@ -473,7 +469,7 @@ namespace SharpMenu.NativeHelpers
             // Add 4 bytes to the offset
             stream.Seek(dosHeader.e_lfanew, SeekOrigin.Begin);
 
-            UInt32 ntHeadersSignature = reader.ReadUInt32();
+            uint ntHeadersSignature = reader.ReadUInt32();
             fileHeader = FromBinaryReader<IMAGE_FILE_HEADER>(reader);
 
             uint debugRva;
@@ -639,7 +635,7 @@ namespace SharpMenu.NativeHelpers
         {
             get
             {
-                UInt16 IMAGE_FILE_32BIT_MACHINE = 0x0100;
+                ushort IMAGE_FILE_32BIT_MACHINE = 0x0100;
                 return (IMAGE_FILE_32BIT_MACHINE & FileHeader.Characteristics) == IMAGE_FILE_32BIT_MACHINE;
             }
         }
