@@ -2,9 +2,9 @@
 A mod menu base in C# for Grand Theft Auto V.
 Strictly for educational purposes.
 
-This is largely based on BigBaseV2.
+This is **largely** based on [BigBaseV2 from spankerincrease](https://bitbucket.org/gir489/bigbasev2-fix/) and [YimMenu from Yimura](https://github.com/Yimura/YimMenu), please check them out.
 
-Right now, fiber pool, native invoking, and hooks are the features, this is very wip.
+Right now, fiber pool, native invoking, hooks and barebone ImGui are the features, this is very wip.
 
 ## Structure
 SharpHost is C++ library that you inject in the target process, its here for hosting the net6 coreclr runtime.
@@ -18,12 +18,13 @@ Until a proper launcher / release is made you'll have to do that and put the fol
 - Put SharpMenu.dll in plugins which contains the BigBaseV2 equivalent in csharp.
 
 ## Build environment
-To set up the build environment, run the following commands in a terminal:
+To set up the build environment : 
+- Make sure Net 6 SDK is installed
+- You may need to edit the #pragma lib in SharpHost to target your actual host path
+- Run the following commands in a terminal:
 ```dos
 git clone <ThisRepoURL> --recursive
 cd SharpHost
 GenerateProjects.bat
 ```
-It'll generate a .sln for VS, but : you'll have to add the c# projects manually until a script that does it is done (Add Existing Project, select the .csproj files)
-
-
+It'll generate a .sln for VS, the .csproj that are generated from premake actually contains a lot of useless stuff but it should still work.
