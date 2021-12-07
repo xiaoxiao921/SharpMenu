@@ -108,6 +108,11 @@ namespace sharp_host::api::imgui
         return ImGui::MenuItem(label, shortcut, selected, enabled);
     }
 
+    void SetNextWindowSize(const ImVec2& size, ImGuiCond cond)
+    {
+        return ImGui::SetNextWindowSize(size, cond);
+    }
+
     void Text(char* text)
     {
         return ImGui::Text(text);

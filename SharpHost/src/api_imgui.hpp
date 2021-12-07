@@ -28,5 +28,6 @@ namespace sharp_host::api::imgui
     void EndMenu();
     bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled);
     bool MenuItemSelectedPtr(const char* label, const char* shortcut, bool* selected, bool enabled);
+    void SetNextWindowSize(const ImVec2& size, ImGuiCond cond);
     void Text(char* text);
 }

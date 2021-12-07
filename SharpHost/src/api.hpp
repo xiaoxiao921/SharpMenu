@@ -22,6 +22,7 @@ namespace sharp_host::api
         _imgui_endmenu,
         _imgui_menuitem,
         _imgui_menuitemselectedptr,
+        _imgui_setnextwindowsize,
         _imgui_text,
     };
 

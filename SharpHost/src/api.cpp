@@ -60,6 +60,9 @@ namespace sharp_host::api
         case FunctionIndex::_imgui_menuitemselectedptr:
             return &imgui::MenuItemSelectedPtr;
             break;
+        case FunctionIndex::_imgui_setnextwindowsize:
+            return &imgui::SetNextWindowSize;
+            break;
         case FunctionIndex::_imgui_text:
             return &imgui::Text;
             break;
