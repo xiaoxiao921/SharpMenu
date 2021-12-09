@@ -20,15 +20,21 @@ namespace SharpMenu
 
         public partial class Self
         {
-            public FrameFlags FrameFlags;
+            public FrameFlags FrameFlags = new();
 
             public bool GodMode;
 
+            public bool FreeCam;
+
+            public bool OffRadar;
+
             public bool NeverWanted;
+
+            public bool Noclip;
 
             public bool NoRagdoll;
 
-            public bool OffRadar;
+            public int WantedLevel;
         }
 
         public partial class FrameFlags
@@ -72,15 +78,6 @@ namespace SharpMenu
         public partial class Weapons
         {
             public long CustomWeapon;
-        }
-
-        public partial class Window
-        {
-            public bool Handling;
-
-            public bool Log;
-
-            public bool Players;
         }
 
         public Protections protections = new();
