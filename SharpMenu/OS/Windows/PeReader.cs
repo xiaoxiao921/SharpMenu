@@ -2,6 +2,8 @@
 
 namespace SharpMenu.OS.Windows
 {
+#pragma warning disable CS0649 // not assigned field, which is normal
+
     // Original code from https://gist.github.com/augustoproiete/b51f29f74f5f5b2c59c39e47a8afc3a3
     // Minus the IMAGE_DEBUG_DIRECTORY part
 
@@ -728,4 +730,5 @@ namespace SharpMenu.OS.Windows
 
         #endregion Properties
     }
+#pragma warning restore CS0649 // not assigned field, which is normal
 }

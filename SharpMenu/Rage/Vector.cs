@@ -1,37 +1,38 @@
 ﻿namespace SharpMenu.Rage
 {
-    internal unsafe struct vector2
+#pragma warning disable CS0649 // not assigned field, which is normal
+	internal unsafe struct vector2
     {
-        float X;
-        float Y;
+		internal float X;
+		internal float Y;
     }
 
     internal unsafe struct vector3
     {
-        float X;
-        float Y;
-        float Z;
+		internal float X;
+		internal float Y;
+		internal float Z;
     }
 
     internal unsafe struct vector4
     {
-        float X;
-        float Y;
-        float Z;
-        float W;
+		internal float X;
+		internal float Y;
+		internal float Z;
+		internal float W;
     }
 
 	[StructLayout(LayoutKind.Explicit, Pack = 1, Size = 0x18)]
 	internal unsafe struct scrVector
 	{
 		[FieldOffset(0)]
-		float X;
+		internal float X;
 
 		[FieldOffset(0x8)]
-		float Y;
+		internal float Y;
 
 		[FieldOffset(0x10)]
-		float Z;
+		internal float Z;
 
 		scrVector(float x, float y, float z)
 		{
@@ -76,4 +77,5 @@
 			return vec;
 		}
 	}
+#pragma warning restore CS0649 // not assigned field, which is normal
 }
