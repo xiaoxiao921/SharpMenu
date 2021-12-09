@@ -9,9 +9,6 @@ namespace SharpMenu.Features.Protections
 
         internal static void Update()
         {
-			// For some reason it crashes, cool :)
-			return;
-
 			if (_busy || !*Pointers.IsSessionStarted)
 			{
 				return;
@@ -26,16 +23,15 @@ namespace SharpMenu.Features.Protections
 			int maxObjects = objectInterface->MaxObjects;
 			for (int i = 0; i < maxObjects; i++)
 			{
-				CObject* obj = objectInterface->GetObject(i);
+				CObject* obj = objectInterface->GetObjectHandle(i)->Object;
 				if (obj == null)
 				{
 					continue;
 				}
-				
+
 				Object ent = Pointers.PtrToHandle(obj);
 
-				//if (g.protections.replay_interface.attach)
-				if (false)
+				if (Config.Instance.protections.ReplayInterface.Attach)
 				{
 					const int @true = 1;
 					if (Convert.ToBoolean(ENTITY.IS_ENTITY_ATTACHED_TO_ENTITY(player, ent)) ||
@@ -45,9 +41,8 @@ namespace SharpMenu.Features.Protections
 					}
 				}
 
-				//if (g.protections.replay_interface.cage && obj->m_model_info->m_model == RAGE_JOAAT("prop_gold_cont_01"))
-				if (true && obj->m_model_info->m_model == EntityUtil.CageHash)
-                {
+				if (Config.Instance.protections.ReplayInterface.Cage && obj->m_model_info->m_model == EntityUtil.CageHash)
+				{
 					EntityUtil.DeleteEntity(ent);
 				}
 

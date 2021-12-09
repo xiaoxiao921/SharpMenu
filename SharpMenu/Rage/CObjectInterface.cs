@@ -12,14 +12,14 @@
 		[FieldOffset(0x0168)]
 		internal int m_cur_objects; //0x0168
 
-		internal CObject* GetObject(int index)
+		internal CObjectHandle* GetObjectHandle(int index)
 		{
 			if (index < MaxObjects)
             {
 				uint uindex = (uint)index;
 				CObjectList objectList = *ObjectList;
-				CObjectHandle objectHandle = *(objectList.handleList + uindex);
-				return objectHandle.Object;
+				CObjectHandle* objectHandle = (CObjectHandle*)(objectList.handleList + uindex * 16);
+				return objectHandle;
 			}
 
 			return null;
