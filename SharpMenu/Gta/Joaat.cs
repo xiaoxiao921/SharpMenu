@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a class for generating hash keys compatible with GTA 5 file formats.
     /// </summary>
-    public static class GTA5Hasher
+    public static class Joaat
     {
         // copied directly from the game -- performs uppercase to lowercase conversions amongst other things
         private static readonly byte[]
@@ -35,7 +35,7 @@
             0xFD, 0xFE, 0xFF
         };
 
-        private static uint GetHashKeySubString(string str, uint initialHash)
+        private static Hash GetHashKeySubString(string str, uint initialHash)
         {
             var hash = initialHash;
             for (int i = 0; i < str.Length; i++)
@@ -47,7 +47,7 @@
             return hash;
         }
 
-        private static uint GetHashKeyFinalize(string str, uint initialHash)
+        private static Hash GetHashKeyFinalize(string str, uint initialHash)
         {
             var hash = GetHashKeySubString(str, initialHash);
             hash += (hash << 3);
@@ -61,7 +61,7 @@
         /// </summary>
         /// <param name="str">The string used to generate a hash key.</param>
         /// <returns>A hash key compatible with GTA 5.</returns>
-        public static uint GetHashKey(string str)
+        public static Hash GetHashKey(string str)
         {
             return GetHashKey(str, 0);
         }
@@ -72,7 +72,7 @@
         /// <param name="str">The string used to generate a hash key.</param>
         /// <param name="initialHash">The initial hash key value used to generate the result.</param>
         /// <returns>A hash key compatible with GTA 5.</returns>
-        public static uint GetHashKey(string str, uint initialHash)
+        public static Hash GetHashKey(string str, uint initialHash)
         {
             return GetHashKeyFinalize(str, initialHash);
         }
@@ -83,7 +83,7 @@
         /// <param name="str">The string used to generate a hash key.</param>
         /// <param name="concat">The additional string to concatenate to the input string.</param>
         /// <returns>A hash key compatible with GTA 5.</returns>
-        public static uint GetHashKey(string str, string concat)
+        public static Hash GetHashKey(string str, string concat)
         {
             return GetHashKey(str, concat, 0);
         }
@@ -96,7 +96,7 @@
         ///
         /// <param name="initialHash">The initial hash key value used to generate the result.</param>
         /// <returns>A hash key compatible with GTA 5.</returns>
-        public static uint GetHashKey(string str, string concat, uint initialHash)
+        public static Hash GetHashKey(string str, string concat, uint initialHash)
         {
             return GetHashKeyFinalize(concat,
             GetHashKeySubString(str, initialHash));
