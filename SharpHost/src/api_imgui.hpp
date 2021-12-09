@@ -13,6 +13,8 @@ namespace sharp_host::api::imgui
 
     void init(IDXGISwapChain* swapchain_ptr, void* hwnd);
     void destroy();
+    void show_cursor();
+    void hide_cursor();
     void dx11_start_frame();
     void dx11_end_frame();
     void dx11_prereset();
@@ -22,12 +24,21 @@ namespace sharp_host::api::imgui
     bool Begin(const char* name, bool* p_open, ImGuiWindowFlags flags);
     bool BeginMainMenuBar();
     bool BeginMenu(char* label, bool enabled = true);
+    bool BeginTabBar(const char* str_id, ImGuiTabBarFlags flags);
+    bool BeginTabItem(const char* label, bool* p_open, ImGuiTabItemFlags flags);
+    bool Button(char* label, ImVec2& size = ImVec2(0, 0));
     bool Checkbox(char* label, bool* v);
     void End();
     void EndMainMenuBar();
     void EndMenu();
+    void EndTabBar();
+    void EndTabItem();
     bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled);
     bool MenuItemSelectedPtr(const char* label, const char* shortcut, bool* selected, bool enabled);
+    void SameLine(float offset_from_start_x = 0.0f, float spacing = -1.0f);
     void SetNextWindowSize(const ImVec2& size, ImGuiCond cond);
+    bool SliderInt(char* label, int* v, int v_min, int v_max, char* format = "%d", ImGuiSliderFlags flags = 0);
     void Text(char* text);
+    bool TreeNode(const char* label);
+    void TreePop();
 }

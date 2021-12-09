@@ -18,6 +18,12 @@ namespace sharp_host::api
         case FunctionIndex::_imgui_destroy:
             return &imgui::destroy;
             break;
+        case FunctionIndex::_imgui_show_cursor:
+            return &imgui::show_cursor;
+            break;
+        case FunctionIndex::_imgui_hide_cursor:
+            return &imgui::hide_cursor;
+            break;
         case FunctionIndex::_imgui_dx11_start_frame:
             return &imgui::dx11_start_frame;
             break;
@@ -42,6 +48,15 @@ namespace sharp_host::api
         case FunctionIndex::_imgui_beginmenu:
             return &imgui::BeginMenu;
             break;
+        case FunctionIndex::_imgui_begintabbar:
+            return &imgui::BeginTabBar;
+            break;
+        case FunctionIndex::_imgui_begintabitem:
+            return &imgui::BeginTabItem;
+            break;
+        case FunctionIndex::_imgui_button:
+            return &imgui::Button;
+            break;
         case FunctionIndex::_imgui_checkbox:
             return &imgui::Checkbox;
             break;
@@ -49,10 +64,16 @@ namespace sharp_host::api
             return &imgui::End;
             break;
         case FunctionIndex::_imgui_endmainmenubar:
-            return &imgui::EndMenu;
+            return &imgui::EndMainMenuBar;
             break;
         case FunctionIndex::_imgui_endmenu:
             return &imgui::EndMenu;
+            break;
+        case FunctionIndex::_imgui_endtabbar:
+            return &imgui::EndTabBar;
+            break;
+        case FunctionIndex::_imgui_endtabitem:
+            return &imgui::EndTabItem;
             break;
         case FunctionIndex::_imgui_menuitem:
             return &imgui::MenuItem;
@@ -60,11 +81,23 @@ namespace sharp_host::api
         case FunctionIndex::_imgui_menuitemselectedptr:
             return &imgui::MenuItemSelectedPtr;
             break;
+        case FunctionIndex::_imgui_sameline:
+            return &imgui::SameLine;
+            break;
         case FunctionIndex::_imgui_setnextwindowsize:
             return &imgui::SetNextWindowSize;
             break;
+        case FunctionIndex::_imgui_sliderint:
+            return &imgui::SliderInt;
+            break;
         case FunctionIndex::_imgui_text:
             return &imgui::Text;
+            break;
+        case FunctionIndex::_imgui_treenode:
+            return &imgui::TreeNode;
+            break;
+        case FunctionIndex::_imgui_treepop:
+            return &imgui::TreePop;
             break;
         default:
             MessageBoxA(nullptr,

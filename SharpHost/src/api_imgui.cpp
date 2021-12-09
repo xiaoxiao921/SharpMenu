@@ -35,6 +35,18 @@ namespace sharp_host::api::imgui
         ImGui::DestroyContext();
     }
 
+    void show_cursor()
+    {
+        ImGui::GetIO().MouseDrawCursor = true;
+        ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+    }
+
+    void hide_cursor()
+    {
+        ImGui::GetIO().MouseDrawCursor = false;
+        ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+    }
+
     void dx11_start_frame()
     {
         ImGui_ImplDX11_NewFrame();
@@ -78,6 +90,21 @@ namespace sharp_host::api::imgui
         return ImGui::BeginMenu(label, enabled);
     }
 
+    bool BeginTabBar(const char* str_id, ImGuiTabBarFlags flags)
+    {
+        return ImGui::BeginTabBar(str_id, flags);
+    }
+
+    bool BeginTabItem(const char* label, bool* p_open, ImGuiTabItemFlags flags)
+    {
+        return ImGui::BeginTabItem(label, p_open, flags);
+    }
+
+    bool Button(char* label, ImVec2& size)
+    {
+        return ImGui::Button(label, size);
+    }
+
     bool Checkbox(char* label, bool* v)
     {
         return ImGui::Checkbox(label, v);
@@ -98,6 +125,16 @@ namespace sharp_host::api::imgui
         return ImGui::EndMenu();
     }
 
+    void EndTabBar()
+    {
+        return ImGui::EndTabBar();
+    }
+
+    void EndTabItem()
+    {
+        return ImGui::EndTabItem();
+    }
+
     bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled)
     {
         return ImGui::MenuItem(label, shortcut, selected, enabled);
@@ -108,13 +145,33 @@ namespace sharp_host::api::imgui
         return ImGui::MenuItem(label, shortcut, selected, enabled);
     }
 
+    void SameLine(float offset_from_start_x, float spacing)
+    {
+        ImGui::SameLine(offset_from_start_x, spacing);
+    }
+
     void SetNextWindowSize(const ImVec2& size, ImGuiCond cond)
     {
         return ImGui::SetNextWindowSize(size, cond);
     }
 
+    bool SliderInt(char* label, int* v, int v_min, int v_max, char* format, ImGuiSliderFlags flags)
+    {
+        return ImGui::SliderInt(label, v, v_min, v_max, format, flags);
+    }
+
     void Text(char* text)
     {
         return ImGui::Text(text);
+    }
+
+    bool TreeNode(const char* label)
+    {
+        return ImGui::TreeNode(label);
+    }
+
+    void TreePop()
+    {
+        ImGui::TreePop();
     }
 }

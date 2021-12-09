@@ -656,8 +656,8 @@ namespace ImGui
 } // namespace ImGui
 """
 
-def GetParamsInList(cppSource):
-    paramsString = GetParams(cppSource).split(",")
+def GetParamsInList(cppFunctionSignature):
+    paramsString = GetParams(cppFunctionSignature).split(",")
     res = []
     for i in range(len(paramsString)):
         curParam = paramsString[i]
@@ -680,55 +680,54 @@ def GetParamsInList(cppSource):
     #print(res)
     return ", ".join(res)
 
-def GetParams(cppSource):
-    cppSource = cppSource.replace("const", "")
-    start = cppSource.index("(") + 1
-    #print(cppSource)
-    end = cppSource.rindex(");")
-    return cppSource[start:end].lstrip().rstrip()
+def GetParams(cppFunctionSignature):
+    cppFunctionSignature = cppFunctionSignature.replace("const", "")
+    start = cppFunctionSignature.index("(") + 1
+    #print(cppFunctionSignature)
+    end = cppFunctionSignature.rindex(");")
+    return cppFunctionSignature[start:end].lstrip().rstrip()
 
-def GetCppReturnType(cppSource):
-    end = cppSource.index(" ")
+def GetCppReturnType(cppFunctionSignature):
+    end = cppFunctionSignature.index(" ")
     
-    if "const" in cppSource[0:end]:
-        end = cppSource.index(" ", cppSource.index(" ") + 1)
-        return cppSource[0:end]
+    if "const" in cppFunctionSignature[0:end]:
+        end = cppFunctionSignature.index(" ", cppFunctionSignature.index(" ") + 1)
+        return cppFunctionSignature[0:end]
         
-    return cppSource[0:end]
+    return cppFunctionSignature[0:end]
     
-def GetCppReturnTypeForCsharp(cppSource):
-    end = cppSource.index(" ")
+def GetCppReturnTypeForCsharp(cppFunctionSignature):
+    end = cppFunctionSignature.index(" ")
     
-    if "const" in cppSource[0:end]:
-        end = cppSource.index(" ", cppSource.index(" ") + 1)
-        return cppSource[cppSource.index(" ") + 1:end]
+    if "const" in cppFunctionSignature[0:end]:
+        end = cppFunctionSignature.index(" ", cppFunctionSignature.index(" ") + 1)
+        return cppFunctionSignature[cppFunctionSignature.index(" ") + 1:end]
         
-    return cppSource[0:end]
+    return cppFunctionSignature[0:end]
 
-def GetCppFunctionName(cppSource):
-    end = cppSource.index("(")
+def GetCppFunctionName(cppFunctionSignature):
+    end = cppFunctionSignature.index("(")
     for i in range(end, 0, -1):
-        if cppSource[i] == ' ':
+        if cppFunctionSignature[i] == ' ':
             start = i + 1;
-            return cppSource[start:end]
+            return cppFunctionSignature[start:end]
+            
+def PrintApiSwitchCase(cppFunctionSignature):
+    print("        case FunctionIndex::imgui_" + GetCppFunctionName(cppFunctionSignature).lower() + ":")
+    print("            return &imgui::" + GetCppFunctionName(cppFunctionSignature) + ";")
+    print("            break;")
+    
+def PrintCppProxy(cppFunctionSignature):
+    print("    " + GetCppReturnType(cppFunctionSignature) + " " + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")")
+    print("    {")
+    if GetCppReturnType(cppFunctionSignature) != "void":
+        print("        return ImGui::" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParamsInList(cppFunctionSignature) + ");")
+    else:
+        print("        ImGui::" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParamsInList(cppFunctionSignature) + ");")
+    print("    }\n")
 
 res = ""
 
-#print("internal static unsafe class ImGui\n{")
-#for line in r.splitlines():
-#    line = line.lstrip().rstrip().split( ";")[0]
-#    if "IMGUI_API" in line and not line.startswith("//"):
-#        cppFunctionSignature = line.replace("IMGUI_API", "").lstrip().rstrip()
-        #print(cppFunctionSignature)
-        #print("Function Name :\t\t" + GetCppFunctionName(cppFunctionSignature))
-        #print("Return Type :\t\t" + GetCppReturnType(cppFunctionSignature))
-        #print("Params :\t\t" + GetParams(cppFunctionSignature))
-#        print("    DllImport(\"SharpHost.dll\")")
-#        print("    internal static extern " + GetCppReturnType(cppFunctionSignature) + " " + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")\n")
-#print("}")
-
-
-#print("extern \"C\"\n{")
 for line in r.splitlines():
     line = line.lstrip().rstrip().split(";")[0]
     if "IMGUI_API" in line and not line.startswith("//") and "IM_FMTARGS" not in line:
@@ -738,21 +737,8 @@ for line in r.splitlines():
         line = line.replace("IM_FMTLIST(4);", "")
         line = line + ";"
         cppFunctionSignature = line.replace("IMGUI_API", "").lstrip().rstrip()
-        #print(cppFunctionSignature)
-        #print("Function Name :\t\t" + GetCppFunctionName(cppFunctionSignature))
-        #print("Return Type :\t\t" + GetCppReturnType(cppFunctionSignature))
-        #print("Params :\t\t" + GetParams(cppFunctionSignature))
         
-        #print("    __declspec(dllexport) " + GetCppReturnType(cppFunctionSignature) + " ImGui" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")")
-        print("    " + GetCppReturnType(cppFunctionSignature) + " " + GetCppFunctionName(cppFunctionSignature) + "(" + GetParams(cppFunctionSignature) + ")")
-        print("    {")
-        if GetCppReturnType(cppFunctionSignature) != "void":
-            print("        return ImGui::" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParamsInList(cppFunctionSignature) + ");")
-        else:
-            print("        ImGui::" + GetCppFunctionName(cppFunctionSignature) + "(" + GetParamsInList(cppFunctionSignature) + ");")
-        print("    }\n")
-        print("        case FunctionIndex::imgui_" + GetCppFunctionName(cppFunctionSignature).lower() + ":")
-        print("            return &imgui::" + GetCppFunctionName(cppFunctionSignature) + ";")
-        print("            break;")
+        PrintCppProxy(cppFunctionSignature)
+        PrintApiSwitchCase(cppFunctionSignature)
+
         print()
-print("}")
