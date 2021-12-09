@@ -22,8 +22,7 @@ namespace SharpMenu.Features
                 return;
             }
 
-            //if (Config.Instance.self.FrameFlags.ExplosiveAmmo)
-            if (true)
+            if (Config.Instance.self.FrameFlags.ExplosiveAmmo)
             {
                 Ped->m_player_info->m_frame_flags |= (uint)eFrameFlags.eFrameFlagExplosiveAmmo;
             }
@@ -38,8 +37,7 @@ namespace SharpMenu.Features
                 Ped->m_player_info->m_frame_flags |= (uint)eFrameFlags.eFrameFlagFireAmmo;
             }
 
-            //if (Config.Instance.self.FrameFlags.SuperJump)
-            if (true)
+            if (Config.Instance.self.FrameFlags.SuperJump)
             {
                 Ped->m_player_info->m_frame_flags |= (uint)eFrameFlags.eFrameFlagSuperJump;
             }
