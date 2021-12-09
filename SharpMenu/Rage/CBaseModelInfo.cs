@@ -1,9 +1,9 @@
 ﻿namespace SharpMenu.Rage
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    [StructLayout(LayoutKind.Explicit)]
     internal unsafe struct CBaseModelInfo
 	{
-		fixed sbyte pad_0000[24]; //0x0000
-		uint m_model; //0x0018
+		[FieldOffset(0x0018)]
+		internal uint m_model; //0x0018
 	}
 }

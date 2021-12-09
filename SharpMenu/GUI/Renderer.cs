@@ -54,11 +54,20 @@ namespace SharpMenu.GUI
 
         internal static void OnPresent()
         {
+            if (ScriptMain.Opened)
+            {
+                ApiImGui.show_cursor();
+            }
+            else
+            {
+                ApiImGui.hide_cursor();
+            }
+
             ApiImGui.dx11_start_frame();
 
-            if (Gui.Opened)
+            if (ScriptMain.Opened)
             {
-                Gui.Draw();
+                ScriptMain.Draw();
             }
 
             ApiImGui.dx11_end_frame();
@@ -98,10 +107,10 @@ namespace SharpMenu.GUI
             const int VK_F7 = 0x76;
             if (message == WM_KEYUP && (int)wParam == VK_INSERT)
             {
-                Gui.Opened ^= true;
+                ScriptMain.Opened ^= true;
             }
 
-            if (Gui.Opened)
+            if (ScriptMain.Opened)
             {
                 ApiImGui.wndproc(hWnd, message, wParam, lParam);
             }

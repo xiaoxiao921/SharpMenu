@@ -50,7 +50,7 @@ namespace SharpMenu
         private static bool _firstTickInternal = true;
         internal static unsafe void Tick()
         {
-            ScriptUtil.ExecuteAsScript(GTA5Hasher.GetHashKey("main_persistent"), _tickInternalDelegate);
+            ScriptUtil.ExecuteAsScript(Joaat.GetHashKey("main_persistent"), _tickInternalDelegate);
         }
     }
 }

@@ -22,21 +22,23 @@ namespace SharpMenu.GUI.Windows.Main
 			fixed (ApiImGui.ImVec2* windowSize = &_windowSize)
             {
 				ApiImGui.setnextwindowsize(windowSize, ApiImGui.ImGuiCond_.ImGuiCond_FirstUseEver);
-				/*if (Config.Instance.window.Main && ImGui::Begin("SharpMenu"))
+				if (Config.Instance.window.Main && ApiImGui.Begin("SharpMenu"))
 				{
 					ApiImGui.BeginTabBar("tabbar");
-					tab_main::tab_self();
-					tab_main::tab_spawn();
-					tab_main::tab_tunables();
-					tab_main::tab_teleport();
-					tab_main::tab_vehicle();
-					tab_main::tab_weapons();
-					tab_main::tab_recovery();
-					tab_main::tab_settings();
-					ApiImGui.endtabbar();
 
-					ApiImGui.end();
-				}*/
+					Self.Draw();
+					Spawn.Draw();
+					Tunables.Draw();
+					Teleport.Draw();
+					Vehicle.Draw();
+					Weapons.Draw();
+					Recovery.Draw();
+					Settings.Draw();
+
+					ApiImGui.EndTabBar();
+
+					ApiImGui.End();
+				}
 			}
 		}
     }

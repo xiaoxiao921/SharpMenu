@@ -61,7 +61,8 @@ namespace SharpMenu
         {
             Init();
 
-            ScriptManager.Add(new Script(Gui.ScriptFunc));
+            ScriptManager.Add(new Script(Features.ScriptMain.EntryPoint));
+            ScriptManager.Add(new Script(GUI.ScriptMain.EntryPoint));
 
             while (Running)
             {

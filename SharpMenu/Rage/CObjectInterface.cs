@@ -1,12 +1,28 @@
 ﻿namespace SharpMenu.Rage
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 0x30)]
+    [StructLayout(LayoutKind.Explicit)]
     internal unsafe struct CObjectInterface
 	{
-		fixed sbyte pad_0000[344]; //0x0000
-		internal CObjectList* m_object_list; //0x0158
-		int m_max_objects; //0x0160
-		fixed sbyte pad_0164[4]; //0x0164
-		int m_cur_objects; //0x0168
-	}
+		[FieldOffset(0x0158)]
+		internal CObjectList* ObjectList; //0x0158
+
+		[FieldOffset(0x0160)]
+		internal int MaxObjects; //0x0160
+
+		[FieldOffset(0x0168)]
+		internal int m_cur_objects; //0x0168
+
+		internal CObject* GetObject(int index)
+		{
+			if (index < MaxObjects)
+            {
+				uint uindex = (uint)index;
+				CObjectList objectList = *ObjectList;
+				CObjectHandle objectHandle = *(objectList.handleList + uindex);
+				return objectHandle.Object;
+			}
+
+			return null;
+		}
+}
 }

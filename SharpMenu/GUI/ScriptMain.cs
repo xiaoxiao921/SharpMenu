@@ -5,11 +5,11 @@ using SharpMenu.Rage.Natives;
 
 namespace SharpMenu.GUI
 {
-    internal static unsafe class Gui
+    internal static unsafe class ScriptMain
     {
         internal static bool Opened;
 
-		internal static void ScriptFunc()
+		internal static void EntryPoint()
 		{
 			ScriptInit();
 			while (true)
@@ -69,7 +69,7 @@ namespace SharpMenu.GUI
             HandlingWindow.Draw();
 
             PlayerWindow.Draw();
-            Users.Draw();
+            PlayersWindow.Draw();
         }
     }
 }

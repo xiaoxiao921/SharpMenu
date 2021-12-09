@@ -1,12 +1,15 @@
 ﻿namespace SharpMenu.Rage
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 4, Size = 0x30)]
+    [StructLayout(LayoutKind.Explicit)]
     internal unsafe struct CReplayInterface
     {
-		fixed sbyte pad_0000[16]; //0x0000
+		[FieldOffset(0x0010)]
 		internal CVehicleInterface* m_vehicle_interface; //0x0010
+
+		[FieldOffset(0x0018)]
 		internal CPedInterface* m_ped_interface; //0x0018
-		fixed sbyte pad_0020[8]; //0x0020
-		internal CObjectInterface* m_object_interface; //0x0028
-    }
+
+		[FieldOffset(0x0028)]
+		internal CObjectInterface* ObjectInterface; //0x0028
+	}
 }

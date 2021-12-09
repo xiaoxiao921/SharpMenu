@@ -1,4 +1,5 @@
-﻿using SharpMenu.Gta;
+﻿using SharpMenu.Features;
+using SharpMenu.Gta;
 using SharpMenu.Rage.Natives;
 using SharpMenu.SharpHostCom;
 
@@ -6,6 +7,19 @@ namespace SharpMenu.GUI
 {
     internal static unsafe class TopBar
 	{
+		private static Script.NoParamVoidDelegate SkipCutscene = SkipCutscene_;
+		private static void SkipCutscene_()
+		{
+			CUTSCENE.STOP_CUTSCENE_IMMEDIATELY();
+		}
+
+		private static SessionType SelectedSessionType;
+		private static Script.NoParamVoidDelegate JoinType = JoinType_;
+		private static void JoinType_()
+		{
+			Session.Join(SelectedSessionType);
+		}
+
 		internal static unsafe void Draw()
         {
 			if (ApiImGui.beginmainmenubar())
@@ -14,13 +28,13 @@ namespace SharpMenu.GUI
 				{
 					ApiImGui.MenuItem("Logged in as:", null, false, false);
 
-					if (Gta.Player.LocalPlayer == null || Gta.Player.LocalPlayer->m_player_info == null)
+					if (Features.LocalPlayer.Ped == null || Features.LocalPlayer.Ped->m_player_info == null)
 					{
 						ApiImGui.MenuItem("unknown", null, false, false);
 					}
 					else
 					{
-						ApiImGui.MenuItem(Gta.Player.LocalPlayer->m_player_info->m_name, null, false, false);
+						ApiImGui.MenuItem(Features.LocalPlayer.Ped->m_player_info->Name(), null, false, false);
 					}
 
 					ApiImGui.EndMenu();
@@ -32,12 +46,8 @@ namespace SharpMenu.GUI
 					{
 						if (ApiImGui.MenuItem(sessionType.name))
 						{
+							SelectedSessionType = sessionType;
 							FiberPool.QueueJob(JoinType);
-							void JoinType()
-							{
-								//todo
-								//session::join_type(sessionType);
-							}
 						}
 					}
 
@@ -49,10 +59,6 @@ namespace SharpMenu.GUI
 					if (ApiImGui.MenuItem("Skip Cutscene"))
 					{
 						FiberPool.QueueJob(SkipCutscene);
-						void SkipCutscene()
-						{
-							CUTSCENE.STOP_CUTSCENE_IMMEDIATELY();
-						}
 					}
 
 					ApiImGui.EndMenu();

@@ -4,14 +4,14 @@
     {
         public partial class Window
         {
-            public bool Handling;
+            public bool Players;
         }
     }
 }
 
-namespace SharpMenu.GUI.Windows.Handling
+namespace SharpMenu.GUI
 {
-    internal static unsafe class HandlingWindow
+    internal static unsafe class PlayersWindow
 	{
 		internal static unsafe void Draw()
         {

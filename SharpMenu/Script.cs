@@ -70,11 +70,13 @@ namespace SharpMenu
             }
         }
 
-        internal void Yield(long time = 0)
+        internal void Yield(long timeInMilliseconds = 0)
         {
-            if (time != 0)
+            if (timeInMilliseconds != 0)
             {
-                _wakeTime = Stopwatch.GetTimestamp() + time;
+                long timeStampInMilliseconds = (Stopwatch.GetTimestamp() / Stopwatch.Frequency) * 1000;
+                timeStampInMilliseconds += timeInMilliseconds;
+                _wakeTime = timeStampInMilliseconds;
             }
             else
             {

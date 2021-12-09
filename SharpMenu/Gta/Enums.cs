@@ -11,6 +11,14 @@
 		VEHICLE_GUN
     }
 
+    enum eFrameFlags : UInt32
+    {
+        eFrameFlagExplosiveAmmo = 1 << 11,
+        eFrameFlagFireAmmo = 1 << 12,
+        eFrameFlagExplosiveMelee = 1 << 13,
+        eFrameFlagSuperJump = 1 << 14,
+    };
+
     enum eExplosionType : uint
     {
         DONTCARE = uint.MaxValue,
