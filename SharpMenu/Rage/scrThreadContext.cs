@@ -7,7 +7,7 @@ namespace SharpMenu.Rage
     {
 		internal uint ThreadId;                         // 0x00
 		internal joaat ScriptHash;                      // 0x04
-		internal ThreadState ThreadState;                // 0x08
+		internal eThreadState ThreadState;                // 0x08
 		internal uint InstructionPointer;               // 0x0C
 		internal uint FramePointer;                     // 0x10
 		internal uint StackPointer;                     // 0x14
