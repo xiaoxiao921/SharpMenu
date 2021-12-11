@@ -42,7 +42,7 @@ namespace SharpMenu.Rage
 		internal CPed* m_ped; //0x01E8
 
 		[FieldOffset(0x0218)]
-		internal uint m_frame_flags; //0x0218
+		internal eFrameFlags m_frame_flags; //0x0218
 
 		[FieldOffset(0x0250)]
 		internal uint m_player_controls; //0x0250
