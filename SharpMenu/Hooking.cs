@@ -28,9 +28,6 @@ namespace SharpMenu
         private static ConvertThreadToFiberDel _convertThreadToFiberHookDel = ConvertThreadToFiber;
         private static NativeDetour ConvertThreadToFiberHook;
 
-        private static NativeDetour m_gta_thread_tick_hook;
-        private static NativeDetour m_gta_thread_kill_hook;
-
         private static NativeDetour m_increment_stat_hook;
 
         private static NativeDetour m_error_screen_hook;
@@ -66,7 +63,7 @@ namespace SharpMenu
             var convertThreadToFiberOrigPtr = Marshal.GetFunctionPointerForDelegate<ConvertThreadToFiberDel>(Fibers.ConvertThreadToFiber);
             var convertThreadToFiberHookPtr = Marshal.GetFunctionPointerForDelegate(_convertThreadToFiberHookDel);
             ConvertThreadToFiberHook = new NativeDetour(convertThreadToFiberOrigPtr, convertThreadToFiberHookPtr, new NativeDetourConfig { ManualApply = true });
-            _origConvertThreadToFiber = RunScriptThreadsHook.GenerateTrampoline<ConvertThreadToFiberDel>();
+            _origConvertThreadToFiber = ConvertThreadToFiberHook.GenerateTrampoline<ConvertThreadToFiberDel>();
         }
 
         internal static void Enable()
@@ -86,7 +83,6 @@ namespace SharpMenu
             SwapChainResizeBuffersHook.Dispose();
             SwapChainPresentHook.Dispose();
         }
-
 
         private static bool _presentRecursionLock = false;
         private static long SwapChainPresent(IDXGISwapChain* this_, uint syncInterval, uint flags)
