@@ -28,6 +28,7 @@ namespace SharpMenu.SharpHostCom
             _imgui_endmenu,
             _imgui_endtabbar,
             _imgui_endtabitem,
+            _imgui_inputtext,
             _imgui_menuitem,
             _imgui_menuitemselectedptr,
             _imgui_sameline,
@@ -38,6 +39,12 @@ namespace SharpMenu.SharpHostCom
             _imgui_treepop,
         }
 
+        /// <summary>
+        /// size_t typeid_hash_code(rtti_dummy* class_ptr)
+        /// {
+        ///     return typeid(*class_ptr).hash_code();
+        /// }
+        /// </summary>
         internal static delegate* unmanaged<nuint, nuint> typeid_hash_code;
 
 

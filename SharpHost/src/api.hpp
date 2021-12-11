@@ -27,6 +27,7 @@ namespace sharp_host::api
         _imgui_endmenu,
         _imgui_endtabbar,
         _imgui_endtabitem,
+        _imgui_inputtext,
         _imgui_menuitem,
         _imgui_menuitemselectedptr,
         _imgui_sameline,

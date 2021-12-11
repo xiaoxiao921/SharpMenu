@@ -33,6 +33,7 @@ namespace sharp_host::api::imgui
     void EndMenu();
     void EndTabBar();
     void EndTabItem();
+    bool InputText(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiInputTextCallback callback = NULL, void* user_data = NULL);
     bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled);
     bool MenuItemSelectedPtr(const char* label, const char* shortcut, bool* selected, bool enabled);
     void SameLine(float offset_from_start_x = 0.0f, float spacing = -1.0f);

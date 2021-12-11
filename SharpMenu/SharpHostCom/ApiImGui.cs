@@ -212,6 +212,30 @@ namespace SharpMenu.SharpHostCom
         internal static delegate* unmanaged<void> EndTabItem;
 
         /// <summary>
+        /// bool InputText(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiInputTextCallback callback = NULL, void* user_data = NULL);
+        /// </summary>
+        internal static delegate* unmanaged<char*, void*, ulong, ImGuiInputTextFlags_, ulong, void*, bool> inputtext;
+
+        /// <summary>
+        /// <inheritdoc cref="inputtext"/>
+        /// </summary>
+        internal static bool InputText(string label, out string text, ImGuiInputTextFlags_ flags = 0, ulong imGuiInputTextCallbackPtr = 0, void* userData = null)
+        {
+            using AnsiString nativeLabel = label;
+
+            const int bufferSize = 32;
+            var outBuffer = NativeMemory.Alloc(bufferSize);
+
+            var res = inputtext(nativeLabel, outBuffer, bufferSize, flags, imGuiInputTextCallbackPtr, userData);
+
+            text = Marshal.PtrToStringAnsi((IntPtr)outBuffer);
+
+            NativeMemory.Free(outBuffer);
+
+            return res;
+        }
+
+        /// <summary>
         /// MenuItem(const char* label, const char* shortcut = NULL, bool selected = false, bool enabled = true);  // return true when activated.
         /// </summary>
         private static delegate* unmanaged<char*, char*, bool, bool, bool> menuitem;
@@ -362,6 +386,7 @@ namespace SharpMenu.SharpHostCom
             EndMenu = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_endmenu);
             EndTabBar = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_endtabbar);
             EndTabItem = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_endtabitem);
+            inputtext = (delegate* unmanaged<char*, void*, ulong, ImGuiInputTextFlags_, ulong, void*, bool>)get_function_pointer(Api.FunctionIndex._imgui_inputtext);
             menuitem = (delegate* unmanaged<char*, char*, bool, bool, bool>)get_function_pointer(Api.FunctionIndex._imgui_menuitem);
             menuitemselectedptr = (delegate* unmanaged<char*, char*, bool*, bool, bool>)get_function_pointer(Api.FunctionIndex._imgui_menuitemselectedptr);
             sameline = (delegate* unmanaged<float, float, void>)get_function_pointer(Api.FunctionIndex._imgui_sameline);

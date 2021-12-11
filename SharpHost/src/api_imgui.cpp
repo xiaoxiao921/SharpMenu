@@ -135,6 +135,11 @@ namespace sharp_host::api::imgui
         return ImGui::EndTabItem();
     }
 
+    bool InputText(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags, ImGuiInputTextCallback callback, void* user_data)
+    {
+        return ImGui::InputText(label, buf, buf_size, flags, callback, user_data);
+    }
+
     bool MenuItem(const char* label, const char* shortcut, bool selected, bool enabled)
     {
         return ImGui::MenuItem(label, shortcut, selected, enabled);

@@ -75,6 +75,9 @@ namespace sharp_host::api
         case FunctionIndex::_imgui_endtabitem:
             return &imgui::EndTabItem;
             break;
+        case FunctionIndex::_imgui_inputtext:
+            return &imgui::InputText;
+            break;
         case FunctionIndex::_imgui_menuitem:
             return &imgui::MenuItem;
             break;
