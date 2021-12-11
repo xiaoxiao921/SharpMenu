@@ -1,5 +1,6 @@
 ﻿using SharpMenu.DirectX;
 using SharpMenu.Extensions;
+using SharpMenu.Features.Multiplayer;
 using SharpMenu.Gta.Classes;
 using SharpMenu.GUI;
 using SharpMenu.Memory;
@@ -26,8 +27,6 @@ namespace SharpMenu
 
         internal static void* ModelSpawnBypass;
 
-        internal static delegate* unmanaged<GtaThread*, uint, ulong> GtaThreadTick;
-        internal static delegate* unmanaged<GtaThread*, ulong> GtaThreadKill;
 
         internal static delegate* unmanaged<ulong, long, long, bool> IncrementStatEvent;
 
@@ -48,8 +47,6 @@ namespace SharpMenu
         internal static delegate* unmanaged<
 				datBitBuffer*, void*, int, int, bool> ReadBitbufArray;
         internal static delegate* unmanaged<netEventMgr*, CNetGamePlayer*, CNetGamePlayer*, int, int, void> SendEventAck;
-
-        internal static delegate* unmanaged<bool, Ped, bool> SpectatePlayer;
 
         internal static delegate* unmanaged<Int64, CNetGamePlayer*, bool> ReportCashSpawn;
 
@@ -157,18 +154,6 @@ namespace SharpMenu
 				Unsafe.InitBlock(incompatible_version, 0x90, 0x165CF03 - 0x165CEE5);
 			});
 
-			// Thread Thick
-			patternBatch.Add("TT", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 80 B9 ? ? ? ? ? 8B FA 48 8B D9 74 05", (ptr) =>
-			{
-				GtaThreadTick = (delegate* unmanaged<GtaThread*, uint, ulong>)ptr;
-			});
-
-			// Thread Kill
-			patternBatch.Add("TK", "48 89 5C 24 ? 57 48 83 EC 20 48 83 B9 ? ? ? ? ? 48 8B D9 74 14", (ptr) =>
-			{
-				GtaThreadKill = (delegate* unmanaged<GtaThread*, ulong>)ptr;
-			});
-
 			// Increment Stat Event
 			patternBatch.Add("ISE", "48 89 5C 24 ? 48 89 74 24 ? 55 57 41 55 41 56 41 57 48 8B EC 48 83 EC 60 8B 79 30", (ptr) =>
 			{
@@ -222,7 +207,7 @@ namespace SharpMenu
 			// Received Event Signatures END
 
 			// Request Control of Entity PATCH
-			patternBatch.Add("RCOE-Patch", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", (ptr) =>
+			patternBatch.Add("RCOE", "48 89 5C 24 ? 57 48 83 EC 20 8B D9 E8 ? ? ? ? ? ? ? ? 8B CB", (ptr) =>
 			{
 				void* spectator_check = (void*)ptr.Add(0x11);
 
@@ -232,7 +217,7 @@ namespace SharpMenu
 			// Spectate Player
 			patternBatch.Add("SP", "48 89 5C 24 ? 57 48 83 EC 20 41 8A F8 84 C9", (ptr) =>
 			{
-				SpectatePlayer = (delegate* unmanaged<bool, Ped, bool>)ptr;
+                Spectate.SpectatePlayer = (delegate* unmanaged<bool, Ped, bool>)ptr;
 			});
 
 			// Report Cash Spawn Handler
