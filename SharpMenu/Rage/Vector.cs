@@ -22,59 +22,52 @@
 		internal float W;
     }
 
-	[StructLayout(LayoutKind.Explicit, Pack = 1, Size = 0x18)]
-	internal unsafe struct scrVector
+	[StructLayout(LayoutKind.Explicit, Pack = 1, Size = 24)]
+	public unsafe struct scrVector
 	{
 		[FieldOffset(0)]
-		internal float X;
+		public float X;
 
-		[FieldOffset(0x8)]
-		internal float Y;
+		[FieldOffset(8)]
+		public float Y;
 
-		[FieldOffset(0x10)]
-		internal float Z;
+		[FieldOffset(16)]
+		public float Z;
 
-		scrVector(float x, float y, float z)
+		public scrVector(float x, float y, float z)
 		{
 			X = x;
 			Y = y;
 			Z = z;
 		}
 
-		public static scrVector operator +(scrVector _this, scrVector other)
+		public static scrVector operator +(scrVector _this, scrVector other) =>
+			new(_this.X + other.X, _this.Y + other.Y, _this.Z + other.Z);
+
+		public static scrVector operator -(scrVector _this, scrVector other) =>
+			new(_this.X - other.X, _this.Y - other.Y, _this.Z - other.Z);
+
+		public static scrVector operator *(scrVector _this, scrVector other) =>
+			new(_this.X * other.X, _this.Y * other.Y, _this.Z * other.Z);
+
+		public static scrVector operator *(scrVector _this, float other) =>
+			new(_this.X * other, _this.Y * other, _this.Z * other);
+
+		public float Length()
 		{
-			scrVector vec;
-			vec.X = _this.X + other.X;
-			vec.Y = _this.Y + other.Y;
-			vec.Z = _this.Z + other.Z;
-			return vec;
+			return MathF.Sqrt(
+				MathF.Pow(X, 2) +
+				MathF.Pow(Y, 2) +
+				MathF.Pow(Z, 2));
 		}
 
-		public static scrVector operator -(scrVector _this, scrVector other)
+		public void Normalize()
 		{
-			scrVector vec;
-			vec.X = _this.X - other.X;
-			vec.Y = _this.Y - other.Y;
-			vec.Z = _this.Z - other.Z;
-			return vec;
-		}
+			var length = Length();
 
-		public static scrVector operator *(scrVector _this, scrVector other)
-		{
-			scrVector vec;
-			vec.X = _this.X * other.X;
-			vec.Y = _this.Y * other.Y;
-			vec.Z = _this.Z * other.Z;
-			return vec;
-		}
-
-		public static scrVector operator *(scrVector _this, float other)
-		{
-			scrVector vec;
-			vec.X = _this.X * other;
-			vec.Y = _this.Y * other;
-			vec.Z = _this.Z * other;
-			return vec;
+			X /= length;
+			Y /= length;
+			Z /= length;
 		}
 	}
 #pragma warning restore CS0649 // not assigned field, which is normal
