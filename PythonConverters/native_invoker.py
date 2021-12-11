@@ -6533,6 +6533,30 @@ def find_between( s, first, last ):
         return s[start:end]
     except ValueError:
         return ""
+        
+def GetParamsInList(cppFunctionSignature):
+    paramsString = GetParams(cppFunctionSignature).split(",")
+    res = []
+    for i in range(len(paramsString)):
+        curParam = paramsString[i]
+        #print(curParam)
+        
+        if "=" in curParam:
+            startEquals = curParam.index("=")
+            curParam = curParam[0:startEquals]
+        curParam = curParam.lstrip().rstrip()
+        
+        
+        if len(curParam.split()) == 2:
+            curParam = curParam.split()[1]
+            
+        if "[" in curParam:
+            startArray = curParam.index("[")
+            curParam = curParam[0:startArray]
+        
+        res.append(curParam)
+    #print(res)
+    return ", ".join(res)
 
 className = ""
 for line in r:
@@ -6554,10 +6578,40 @@ for line in r:
         else:
             line = lineSplitted[0] + "<" + "".join(lineSplitted[1:])
             
+        #print()    
+        argss = line.split("(")[1].split(")")[0].split(" ")
+        typesOfArgs = []
+        for i in range(0, len(argss), 2):
+            typesOfArgs.append(argss[i])
+        
+        argsIndicesWhichAreFloat = []
+        for i in range(len(typesOfArgs)):
+            if typesOfArgs[i] == "float":
+                argsIndicesWhichAreFloat.append(i)
+        #print(typesOfArgs)
+        #print(argsIndicesWhichAreFloat)
+            
         invokeCallArgs = line.split("(0x")
-        invokeCallArgs[1] = invokeCallArgs[1].replace(",", ", (ulong)")
-        #print(invokeCallArgs[1])
-        line = invokeCallArgs[0] + "(0x" + invokeCallArgs[1]
+        
+        paramsNativeInvoke = invokeCallArgs[1].split(",", 1)
+        paramsNativeInvoke = "," + paramsNativeInvoke[-1].split(')', 1)[0]
+        #print(paramsNativeInvoke)
+        paramsNativeInvoke = paramsNativeInvoke.replace(",", ", (ulong)")
+        #print(paramsNativeInvoke)
+        
+        #*(uint*)&x; instead of (ulong) x
+        #print(paramsNativeInvoke.split(","))
+        newParamsNativeInvoke = paramsNativeInvoke.split(",")
+        for i in range(len(newParamsNativeInvoke)):
+            if i == 0:
+                continue
+                
+            if i-1 in argsIndicesWhichAreFloat:
+                newParamsNativeInvoke[i] = newParamsNativeInvoke[i].replace("(ulong) ", "*(uint*)&")
+                
+        paramsNativeInvoke = ",".join(newParamsNativeInvoke)
+        
+        line = invokeCallArgs[0] + "(0x" + invokeCallArgs[1].split(",", 1)[0] + paramsNativeInvoke + "); }"
         line = line.replace("string", "@string")
         line = line.replace("base", "@base")
         line = line.replace("override", "@override")
