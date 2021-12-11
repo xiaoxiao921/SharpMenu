@@ -11,32 +11,6 @@ namespace SharpMenu
             public Dictionary<string, bool> ScriptEvents = new();
         }
 
-        public partial class ReplayInterface
-        {
-            public bool Attach;
-
-            public bool Cage;
-        }
-
-        public partial class Self
-        {
-            public FrameFlags FrameFlags = new();
-
-            public bool GodMode;
-
-            public bool FreeCam;
-
-            public bool OffRadar;
-
-            public bool NeverWanted;
-
-            public bool Noclip;
-
-            public bool NoRagdoll;
-
-            public int WantedLevel;
-        }
-
         public partial class FrameFlags
         {
             public bool ExplosiveAmmo;
