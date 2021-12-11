@@ -12,7 +12,7 @@ namespace SharpMenu
     }
 }
 
-namespace SharpMenu.Features.System
+namespace SharpMenu.Features
 {
     internal unsafe class Screen
     {

@@ -1,4 +1,4 @@
-﻿using SharpMenu.Features;
+﻿using SharpMenu.Features.Multiplayer;
 using SharpMenu.Gta;
 using SharpMenu.Rage.Natives;
 using SharpMenu.SharpHostCom;
@@ -28,13 +28,13 @@ namespace SharpMenu.GUI
 				{
 					ApiImGui.MenuItem("Logged in as:", null, false, false);
 
-					if (Features.LocalPlayer.Ped == null || Features.LocalPlayer.Ped->m_player_info == null)
+					if (Features.Local.LocalPlayer.Ped == null || Features.Local.LocalPlayer.Ped->m_player_info == null)
 					{
 						ApiImGui.MenuItem("unknown", null, false, false);
 					}
 					else
 					{
-						ApiImGui.MenuItem(Features.LocalPlayer.Ped->m_player_info->Name(), null, false, false);
+						ApiImGui.MenuItem(Features.Local.LocalPlayer.Ped->m_player_info->Name(), null, false, false);
 					}
 
 					ApiImGui.EndMenu();

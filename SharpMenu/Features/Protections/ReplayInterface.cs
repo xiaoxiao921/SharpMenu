@@ -1,5 +1,19 @@
 ﻿using SharpMenu.Rage;
 using SharpMenu.Rage.Natives;
+using static SharpMenu.Rage.Natives.NativeUtil;
+
+namespace SharpMenu
+{
+	public partial class Config
+    {
+		public partial class ReplayInterface
+		{
+			public bool Attach;
+
+			public bool Cage;
+		}
+	}
+}
 
 namespace SharpMenu.Features.Protections
 {
@@ -33,7 +47,6 @@ namespace SharpMenu.Features.Protections
 
 				if (Config.Instance.protections.ReplayInterface.Attach)
 				{
-					const int @true = 1;
 					if (Convert.ToBoolean(ENTITY.IS_ENTITY_ATTACHED_TO_ENTITY(player, ent)) ||
 						Convert.ToBoolean(ENTITY.IS_ENTITY_ATTACHED_TO_ENTITY(PED.GET_VEHICLE_PED_IS_IN(player, @true), ent)))
 					{

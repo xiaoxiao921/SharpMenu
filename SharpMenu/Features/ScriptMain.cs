@@ -1,5 +1,6 @@
-﻿using SharpMenu.Features.Protections;
-using SharpMenu.Features.System;
+﻿using SharpMenu.Features.Infos;
+using SharpMenu.Features.Local;
+using SharpMenu.Features.Protections;
 
 namespace SharpMenu.Features
 {
@@ -31,7 +32,7 @@ namespace SharpMenu.Features
 		private static void OnTick()
         {
 			FiberPool.QueueJob(UpdateData);
-			
+
 			FiberPool.QueueJob(UpdateProtections);
 		}
     }

@@ -1,6 +1,6 @@
 ﻿using SharpMenu.Gta.Classes;
 
-namespace SharpMenu.Features
+namespace SharpMenu.Features.Infos
 {
     internal unsafe class PlayerData
     {

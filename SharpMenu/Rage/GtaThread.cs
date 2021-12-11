@@ -3,6 +3,8 @@
     [StructLayout(LayoutKind.Sequential, Size = 0x158)]
     internal unsafe struct GtaThread
     {
+		internal const int SizeOf = 0x158;
+
 		// scrThread fields
 
 		internal void* m_pad1;
@@ -29,7 +31,7 @@
 		internal bool m_can_remove_blips_from_other_scripts;	// 0x148
 		fixed sbyte m_padding7[0x0F];							// 0x149
 
-		static scrThread* Get()
+		internal static scrThread* Get()
         {
 			return tlsContext.Get()->m_script_thread;
         }

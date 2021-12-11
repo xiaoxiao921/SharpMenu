@@ -316,7 +316,7 @@ workspace "SharpHost"
 	{
 	  "Costura.Fody:5.7.0",
 	  "Fody:6.6.0",
-	  "MonoMod.RuntimeDetour:21.11.1.1",
+	  "MonoMod.RuntimeDetour:21.11.09.02",
 	}
 	
 	filter "configurations:Debug"

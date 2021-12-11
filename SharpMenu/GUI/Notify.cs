@@ -1,6 +1,7 @@
 ﻿using SharpMenu.CppHelpers;
-using SharpMenu.Features;
+using SharpMenu.Features.Infos;
 using SharpMenu.Rage.Natives;
+using static SharpMenu.Rage.Natives.NativeUtil;
 
 namespace SharpMenu.GUI
 {
@@ -8,8 +9,6 @@ namespace SharpMenu.GUI
     {
 		internal static void AboveMap(string text)
 		{
-			const int @false = 0;
-
 			using AnsiString @string = "STRING";
 			using AnsiString nativeText = text;
 

@@ -1,13 +1,11 @@
 ﻿using SharpMenu.Gta;
 using SharpMenu.Rage.Natives;
+using static SharpMenu.Rage.Natives.NativeUtil;
 
 namespace SharpMenu.Features
 {
     internal static unsafe class EntityUtil
     {
-        internal const int @false = 0;
-        internal const int @true = 1;
-
         internal static readonly joaat CageHash = Joaat.GetHashKey("prop_gold_cont_01");
 
         internal static void CagePed(Ped ped)
