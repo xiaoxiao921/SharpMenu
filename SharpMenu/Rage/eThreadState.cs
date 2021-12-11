@@ -1,6 +1,6 @@
 ﻿namespace SharpMenu.Rage
 {
-	enum ThreadState : uint
+	enum eThreadState : uint
 	{
 		Idle,
 		Running,
