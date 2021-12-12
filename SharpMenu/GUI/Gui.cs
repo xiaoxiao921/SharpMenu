@@ -9,8 +9,7 @@ namespace SharpMenu.GUI
     {
         internal static bool Opened;
 
-		internal static Script.NoParamVoidDelegate EntryPoint = EntryPoint_;
-		internal static void EntryPoint_()
+		internal static void EntryPoint()
 		{
 			ScriptInit();
 			while (true)
