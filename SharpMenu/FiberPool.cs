@@ -8,14 +8,11 @@
         private static readonly Stack<Script.NoParamVoidDelegate> Jobs = new();
 
         private static readonly Script[] _scripts = new Script[FiberPoolSize];
-
-        private static Script.NoParamVoidDelegate _fiberFuncDelegate = FiberFunc;
-
         internal static unsafe void Init()
         {
             for (int i = 0; i < FiberPoolSize; i++)
             {
-                var script = new Script(_fiberFuncDelegate, 0);
+                var script = new Script(FiberFunc, 0);
                 _scripts[i] = script;
                 ScriptManager.Add(script);
             }
@@ -52,7 +49,8 @@
                 _mutex.ReleaseMutex();
         }
 
-        private static unsafe void FiberFunc()
+        private static Script.NoParamVoidDelegate FiberFunc = FiberFunc_;
+        private static unsafe void FiberFunc_()
         {
             while (true)
             {

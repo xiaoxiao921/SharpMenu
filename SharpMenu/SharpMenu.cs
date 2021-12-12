@@ -39,7 +39,9 @@ namespace SharpMenu
             Api.Init(_getFunctionPtrString!);
 
             Pointers.Init();
+
             Renderer.Init();
+
             FiberPool.Init();
             Hooking.Init();
 
@@ -62,7 +64,7 @@ namespace SharpMenu
             Init();
 
             ScriptManager.Add(new Script(Features.ScriptMain.EntryPoint));
-            ScriptManager.Add(new Script(GUI.ScriptMain.EntryPoint));
+            ScriptManager.Add(new Script(Gui.EntryPoint));
 
             while (Running)
             {
