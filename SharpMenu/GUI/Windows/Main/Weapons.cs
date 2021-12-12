@@ -8,7 +8,15 @@ namespace SharpMenu.GUI.Windows.Main
 
 		internal static unsafe void Draw()
         {
+			if (ApiImGui.BeginTabItem("Weapons"))
+			{
+				if (ApiImGui.Button("Give All"))
+				{
+					FiberPool.QueueJob(Features.Weapons.Give.All);
+				}
 
+				ApiImGui.EndTabItem();
+			}
 		}
     }
 }
