@@ -1,4 +1,5 @@
-﻿using SharpMenu.SharpHostCom;
+﻿using SharpMenu.Features;
+using SharpMenu.SharpHostCom;
 
 namespace SharpMenu.GUI.Windows.Main
 {
@@ -8,7 +9,15 @@ namespace SharpMenu.GUI.Windows.Main
 
 		internal static unsafe void Draw()
         {
+			if (ApiImGui.BeginTabItem("Teleport"))
+			{
+				if (ApiImGui.Button("Waypoint"))
+				{
+					FiberPool.QueueJob(TeleportUtil.ToWaypointJob);
+				}
 
+				ApiImGui.EndTabItem();
+			}
 		}
     }
 }
