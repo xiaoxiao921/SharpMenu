@@ -1,5 +1,8 @@
 ﻿using SharpMenu.DirectX;
+using SharpMenu.Resources;
 using SharpMenu.SharpHostCom;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace SharpMenu.GUI
 {
@@ -14,6 +17,9 @@ namespace SharpMenu.GUI
 
         internal static IDXGISwapChain** SwapChainPtrPtr;
 
+        private static byte[] _consolaFont = ResourcesUtil.ReadResource("SharpMenu.Resources.Fonts.consola.ttf");
+        private static GCHandle _consolaFontHandle;
+
         internal static unsafe void Init()
         {
             SetupWndProcHook();
@@ -21,7 +27,17 @@ namespace SharpMenu.GUI
             var swapChainPtr = *SwapChainPtrPtr;
             var swapChainPtrValue = (IntPtr)swapChainPtr;
 
-            ApiImGui.init((ulong)swapChainPtrValue, (ulong)WindowHandle);
+            _consolaFontHandle = GCHandle.Alloc(_consolaFont, GCHandleType.Pinned);
+            var consolaFontPtr = _consolaFontHandle.AddrOfPinnedObject();
+
+            // Mark memory as EXECUTE_READWRITE to prevent DEP exceptions
+            if (!VirtualProtectEx(Process.GetCurrentProcess().Handle, consolaFontPtr,
+                (UIntPtr)_consolaFont.Length, 0x40 /* EXECUTE_READWRITE */, out uint _))
+            {
+                throw new Win32Exception();
+            }
+
+            ApiImGui.init((ulong)swapChainPtrValue, (ulong)WindowHandle, (ulong)consolaFontPtr, (ulong)_consolaFont.Length);
         }
 
         private static void SetupWndProcHook()
@@ -50,11 +66,13 @@ namespace SharpMenu.GUI
             SetWindowLongPtr64(WindowHandle, GWLP_WNDPROC, _oldWindowProc);
 
             ApiImGui.destroy();
+
+            _consolaFontHandle.Free();
         }
 
         internal static void OnPresent()
         {
-            if (ScriptMain.Opened)
+            if (Gui.Opened)
             {
                 ApiImGui.show_cursor();
             }
@@ -65,9 +83,9 @@ namespace SharpMenu.GUI
 
             ApiImGui.dx11_start_frame();
 
-            if (ScriptMain.Opened)
+            if (Gui.Opened)
             {
-                ScriptMain.Draw();
+                Gui.Draw();
             }
 
             ApiImGui.dx11_end_frame();
@@ -99,6 +117,25 @@ namespace SharpMenu.GUI
         private static IntPtr _newWindowProc;
         private static IntPtr _oldWindowProc;
 
+        [DllImport("kernel32.dll")]
+        private static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetCursorPos(out POINT lpPoint);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetCursorPos(int x, int y);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private unsafe struct POINT
+        {
+            internal int x;
+            internal int y;
+        }
+        private static POINT _cursorCoords;
+
         private static IntPtr _WndProc(IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam)
         {
             const int WM_KEYDOWN = 0x0100;
@@ -107,10 +144,19 @@ namespace SharpMenu.GUI
             const int VK_F7 = 0x76;
             if (message == WM_KEYUP && (int)wParam == VK_INSERT)
             {
-                ScriptMain.Opened ^= true;
+                if (Gui.Opened)
+                {
+                    GetCursorPos(out _cursorCoords);
+                }
+                else if (_cursorCoords.x + _cursorCoords.y != 0)
+                {
+                    SetCursorPos(_cursorCoords.x, _cursorCoords.y);
+                }
+
+                Gui.Opened ^= true;
             }
 
-            if (ScriptMain.Opened)
+            if (Gui.Opened)
             {
                 ApiImGui.wndproc(hWnd, message, wParam, lParam);
             }
