@@ -18,6 +18,8 @@ namespace SharpMenu.Features.Local
 {
     internal static unsafe class FreeCam
     {
+        private static bool _busy;
+
         private const int UpOffset = 25;
 
         private static Cam _camera = -1;
@@ -35,6 +37,12 @@ namespace SharpMenu.Features.Local
             {
                 return;
             }
+
+            if (_busy)
+            {
+                return;
+            }
+            _busy = true;
 
             bool moreSpeed = Convert.ToBoolean(PAD.IS_CONTROL_PRESSED(2, 25)); // aiming
             float distance = moreSpeed ? 5f : 1f;
@@ -79,9 +87,12 @@ namespace SharpMenu.Features.Local
                 correctPed = PED.GET_VEHICLE_PED_IS_IN(correctPed, @false);
 
             ENTITY.SET_ENTITY_COORDS_NO_OFFSET(correctPed, _position.X, _position.Y, _position.Z + (Config.Instance.self.Noclip ? 0 : UpOffset), @false, @false, @false);
+
+            _busy = false;
         }
 
-        internal static void CameraSwitch()
+        internal static Script.NoParamVoidDelegate CameraSwitch = CameraSwitch_;
+        private static void CameraSwitch_()
         {
             if (Config.Instance.self.FreeCam)
             {
@@ -106,7 +117,7 @@ namespace SharpMenu.Features.Local
                 if (Convert.ToBoolean(PED.IS_PED_IN_ANY_VEHICLE(correctPed, @false)))
                     correctPed = PED.GET_VEHICLE_PED_IS_IN(correctPed, @false);
 
-                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(correctPed, _position.X, _position.Y, _position.Z - (Config.Instance.self.Noclip ? 0 : UpOffset), @false, @false, @false);
+                ENTITY.SET_ENTITY_COORDS_NO_OFFSET(correctPed, _position.X, _position.Y, _position.Z, @false, @false, @false);
             }
         }
     }

@@ -27,6 +27,8 @@ namespace SharpMenu.Features.Local
 {
     internal unsafe class LocalPlayer
     {
+        private static bool _busy;
+
         internal static bool _lastGodMode;
 
         internal static uint _lastWantedLevel;
@@ -37,7 +39,19 @@ namespace SharpMenu.Features.Local
 
         internal static void Update()
         {
+            if (_busy)
+            {
+                return;
+            }
+            _busy = true;
+
             Ped = UpdatePed();
+
+            if (Ped == null || Ped->m_player_info == null)
+            {
+                _busy = false;
+                return;
+            }
 
             UpdateGodMode();
 
@@ -49,7 +63,7 @@ namespace SharpMenu.Features.Local
 
             UpdateNoRagdoll();
 
-            FreeCam.Update();
+            _busy = false;
         }
 
         private static unsafe CPed* UpdatePed()
@@ -78,11 +92,6 @@ namespace SharpMenu.Features.Local
 
         private static void UpdateFrameFlags()
         {
-            if (Ped == null || Ped->m_player_info == null)
-            {
-                return;
-            }
-
             var flags = Ped->m_player_info->m_frame_flags;
 
             if (Config.Instance.self.FrameFlags.ExplosiveAmmo)
@@ -110,11 +119,6 @@ namespace SharpMenu.Features.Local
 
         private static void UpdatePolice()
         {
-            if (Ped == null || Ped->m_player_info == null)
-            {
-                return;
-            }
-
             if (Config.Instance.self.NeverWanted)
             {
                 Ped->m_player_info->m_wanted_level = 0;
