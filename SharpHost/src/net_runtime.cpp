@@ -137,6 +137,8 @@ namespace sharp_host
                         "configProperties",
                         {
                             { "System.Reflection.Metadata.MetadataUpdater.IsSupported", false },
+                            { "System.Runtime.TieredCompilation", false },
+                            { "System.Runtime.TieredCompilation.QuickJit", false },
                         }
                     }
                 }
