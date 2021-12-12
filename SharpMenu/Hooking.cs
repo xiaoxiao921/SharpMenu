@@ -63,7 +63,7 @@ namespace SharpMenu
             var convertThreadToFiberOrigPtr = Marshal.GetFunctionPointerForDelegate<ConvertThreadToFiberDel>(Fibers.ConvertThreadToFiber);
             var convertThreadToFiberHookPtr = Marshal.GetFunctionPointerForDelegate(_convertThreadToFiberHookDel);
             ConvertThreadToFiberHook = new NativeDetour(convertThreadToFiberOrigPtr, convertThreadToFiberHookPtr, new NativeDetourConfig { ManualApply = true });
-            _origConvertThreadToFiber = ConvertThreadToFiberHook.GenerateTrampoline<ConvertThreadToFiberDel>();
+            _origConvertThreadToFiber = RunScriptThreadsHook.GenerateTrampoline<ConvertThreadToFiberDel>();
         }
 
         internal static void Enable()
