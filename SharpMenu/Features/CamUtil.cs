@@ -6,10 +6,10 @@ namespace SharpMenu.Features
 {
     internal static unsafe class CamUtil
     {
-		internal static Vector3 RotationToDirection(Vector3* rotation)
+		internal static Vector3 RotationToDirection(Vector3 rotation)
 		{
-			float radiansZ = rotation->Z * 0.0174532924f;
-			float radiansX = rotation->X * 0.0174532924f;
+			float radiansZ = rotation.Z * 0.0174532924f;
+			float radiansX = rotation.X * 0.0174532924f;
 			float num = MathF.Abs(MathF.Cos(radiansX));
 
 			Vector3 direction;
@@ -20,18 +20,18 @@ namespace SharpMenu.Features
 			return direction;
 		}
 
-		internal static Vector3 DirectionToRotation(Vector3* dir, float roll)
+		internal static Vector3 DirectionToRotation(Vector3 direction, float roll)
 		{
-            dir->Normalize();
+            direction.Normalize();
 
 			Vector3 rotVal;
 
-			rotVal.Z = -RadiansToDegrees(MathF.Atan2(dir->X, dir->Y));
+			rotVal.Z = -RadiansToDegrees(MathF.Atan2(direction.X, direction.Y));
 
-			var tmp = new Vector3(dir->X, dir->Y, 0.0f);
+			var tmp = new Vector3(direction.X, direction.Y, 0.0f);
 			float tmpLength = tmp.Length();
 
-			var rotPos = new Vector3(dir->Z, tmpLength, 0.0f);
+			var rotPos = new Vector3(direction.Z, tmpLength, 0.0f);
             rotPos.Normalize();
 
             rotVal.X = RadiansToDegrees(MathF.Atan2(rotPos.X, rotPos.Y));
@@ -41,11 +41,11 @@ namespace SharpMenu.Features
 
 		internal static scrVector ForwardFromCam(scrVector origin, float distance, bool LeftRight = false)
         {
-            Vector3 rot = CAM.GET_GAMEPLAY_CAM_ROT(0);
+            Vector3 rotation = CAM.GET_GAMEPLAY_CAM_ROT(0);
             if (LeftRight)
-                rot.Z += 90; // rotating yaw (up axis)
-            Vector3 dir = RotationToDirection(&rot);
-            Vector3 lengthVector = dir * distance;
+                rotation.Z += 90; // rotating yaw (up axis)
+            Vector3 direction = RotationToDirection(rotation);
+            Vector3 lengthVector = direction * distance;
 
             Vector3 result = origin + lengthVector;
 
@@ -55,7 +55,7 @@ namespace SharpMenu.Features
             return result;
         }
 
-        internal static Vector3 look_at()
+        internal static Vector3 LookAt()
         {
             //Vector3 startPos = ENTITY.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER.PLAYER_PED_ID(), 0, 0, 0);
 
