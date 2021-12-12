@@ -6,7 +6,10 @@ namespace sharp_host::api::imgui
     comptr<ID3D11Device> m_d3d_device;
     comptr<ID3D11DeviceContext> m_d3d_device_context;
 
-    void init(IDXGISwapChain* swapchain_ptr, void* hwnd)
+    ImFont* m_font;
+    ImFont* m_monospace_font;
+
+    void init(IDXGISwapChain* swapchain_ptr, void* hwnd, std::uint8_t* fontArrayPtr, size_t fontArrayLength)
     {
         m_dxgi_swapchain = comptr<IDXGISwapChain>(swapchain_ptr);
 
@@ -26,6 +29,14 @@ namespace sharp_host::api::imgui
 
         ImGui_ImplDX11_Init(m_d3d_device.Get(), m_d3d_device_context.Get());
         ImGui_ImplWin32_Init(hwnd);
+
+        ImFontConfig font_cfg{};
+        font_cfg.FontDataOwnedByAtlas = false;
+        std::strcpy(font_cfg.Name, "Consola");
+
+        m_font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(fontArrayPtr, fontArrayLength, 20.f, &font_cfg);
+        //m_font = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<std::uint8_t*>(font_rubik), sizeof(font_rubik), 20.f, &font_cfg);
+        m_monospace_font = ImGui::GetIO().Fonts->AddFontDefault();
     }
 
     void destroy()

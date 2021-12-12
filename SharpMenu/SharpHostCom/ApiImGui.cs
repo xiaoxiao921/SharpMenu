@@ -53,7 +53,7 @@ namespace SharpMenu.SharpHostCom
             public ImVec4(float _x, float _y, float _z, float _w) { x = _x; y = _y; z = _z; w = _w; }
         }
 
-        internal static delegate* unmanaged<ulong, ulong, void> init;
+        internal static delegate* unmanaged<ulong, ulong, ulong, ulong, void> init;
         internal static delegate* unmanaged<void> destroy;
         internal static delegate* unmanaged<void> show_cursor;
         internal static delegate* unmanaged<void> hide_cursor;
@@ -364,7 +364,7 @@ namespace SharpMenu.SharpHostCom
 
         internal static void GetFunctionPointers(delegate* unmanaged<Api.FunctionIndex, void*> get_function_pointer)
         {
-            init = (delegate* unmanaged<ulong, ulong, void>)get_function_pointer(Api.FunctionIndex._imgui_init);
+            init = (delegate* unmanaged<ulong, ulong, ulong, ulong, void>)get_function_pointer(Api.FunctionIndex._imgui_init);
             destroy = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_destroy);
             show_cursor = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_show_cursor);
             hide_cursor = (delegate* unmanaged<void>)get_function_pointer(Api.FunctionIndex._imgui_hide_cursor);

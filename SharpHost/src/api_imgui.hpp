@@ -11,7 +11,10 @@ namespace sharp_host::api::imgui
     extern comptr<ID3D11Device> m_d3d_device;
     extern comptr<ID3D11DeviceContext> m_d3d_device_context;
 
-    void init(IDXGISwapChain* swapchain_ptr, void* hwnd);
+    extern ImFont* m_font;
+    extern ImFont* m_monospace_font;
+
+    void init(IDXGISwapChain* swapchain_ptr, void* hwnd, std::uint8_t* fontArrayPtr, size_t fontArrayLength);
     void destroy();
     void show_cursor();
     void hide_cursor();
