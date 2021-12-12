@@ -5,7 +5,7 @@ namespace SharpMenu.Features.Infos
 {
     internal static unsafe class Players
     {
-        private static bool _busy = false;
+        private static bool _busy;
 
         internal const int MaxPlayerCount = 32;
         internal static PlayerData[] PlayersData = new PlayerData[MaxPlayerCount];
@@ -31,7 +31,8 @@ namespace SharpMenu.Features.Infos
                 if (Convert.ToBoolean(NETWORK.NETWORK_IS_PLAYER_ACTIVE(i)))
                 {
                     player.NetGamePlayer = Pointers.GetNetGamePlayer(i);
-                    player.Name = player.NetGamePlayer->player_info->Name();
+                    if (player.NetGamePlayer != null && player.NetGamePlayer->player_info != null)
+                        player.Name = player.NetGamePlayer->player_info->Name();
 
                     if (player.IsOnline)
                         continue;

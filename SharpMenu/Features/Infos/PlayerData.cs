@@ -5,7 +5,7 @@ namespace SharpMenu.Features.Infos
     internal unsafe class PlayerData
     {
         internal Player Id;
-        internal string Name;
+        internal string Name = "";
 
         internal bool IsFriend;
         internal bool IsOnline;
