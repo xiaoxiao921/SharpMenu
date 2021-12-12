@@ -42,16 +42,16 @@ namespace SharpMenu
         {
             public bool LeftSide;
 
-            public double PositionX;
+            public float PositionX;
 
-            public double PositionY;
+            public float PositionY;
 
-            public long Type;
+            public byte Type;
         }
 
         public partial class Weapons
         {
-            public long CustomWeapon;
+            public uint CustomWeapon;
         }
 
         public Protections protections = new();
