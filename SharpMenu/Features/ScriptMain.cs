@@ -16,10 +16,21 @@ namespace SharpMenu.Features
 		}
 
 		private static Script.NoParamVoidDelegate UpdateData = UpdateData_;
-		private	static void UpdateData_()
+		private static void UpdateData_()
 		{
 			Screen.Update();
 			LocalPlayer.Update();
+		}
+
+		private static Script.NoParamVoidDelegate Update2 = Update2_;
+		private static void Update2_()
+		{
+			FreeCam.Update();
+		}
+
+		private static Script.NoParamVoidDelegate Update3 = Update3_;
+		private static void Update3_()
+		{
 			Players.Update();
 		}
 
@@ -33,7 +44,11 @@ namespace SharpMenu.Features
         {
 			FiberPool.QueueJob(UpdateData);
 
+			FiberPool.QueueJob(Update2);
+
+			FiberPool.QueueJob(Update3);
+
 			FiberPool.QueueJob(UpdateProtections);
 		}
-    }
+	}
 }
