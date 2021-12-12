@@ -5,11 +5,12 @@ using SharpMenu.Rage.Natives;
 
 namespace SharpMenu.GUI
 {
-    internal static unsafe class ScriptMain
+    internal static unsafe class Gui
     {
         internal static bool Opened;
 
-		internal static void EntryPoint()
+		internal static Script.NoParamVoidDelegate EntryPoint = EntryPoint_;
+		internal static void EntryPoint_()
 		{
 			ScriptInit();
 			while (true)
